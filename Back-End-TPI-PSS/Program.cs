@@ -1,3 +1,6 @@
+using Back_End_TPI_PSS.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace Back_End_TPI_PSS
 {
     public class Program
@@ -12,6 +15,9 @@ namespace Back_End_TPI_PSS
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<PPSContext>(dbContextOptions => dbContextOptions.UseSqlite(
+            builder.Configuration["DB:ConnectionString"]));
 
             var app = builder.Build();
 

@@ -8,6 +8,8 @@ namespace Back_End_TPI_PSS.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string ColourName { get; set; } = string.Empty;
+        public string ColourName { get; set; }
+        public ICollection<Product> Products { get; set; } = new List<Product>();
+
     }
 }
