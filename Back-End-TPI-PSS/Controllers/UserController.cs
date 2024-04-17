@@ -1,5 +1,6 @@
-﻿using Back_End_TPI_PSS.Data.Entities;
-using Back_End_TPI_PSS.Data.Models;
+﻿using Back_End_TPI_PSS.Data.Models;
+using Back_End_TPI_PSS.Data.Models.UserDTOs;
+using Back_End_TPI_PSS.Services.Implementations;
 using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace Back_End_TPI_PSS.Controllers
         {
             if (_userService.CreateUser(userDto))
             {
-                return Ok($"Usuario generado correctamente");
+                return StatusCode(StatusCodes.Status201Created);
             }
             return BadRequest("Ya existe este usuario");
         }
@@ -27,11 +28,29 @@ namespace Back_End_TPI_PSS.Controllers
         [HttpPost("users/loginUser")]
         public IActionResult UserLogin([FromBody] UserLoginDto userLoginDto)
         {
-            if (_userService.UserLogin(userLoginDto.Email, userLoginDto.Password))
+            if (_userService.UserLogin(userLoginDto))
             {
                 return Ok($"Sesión iniciada");
             }
             return BadRequest("Email o contraseña incorrectos");
+        }
+
+        [HttpGet("users")]
+        public IActionResult GetUsers()
+        {
+            return Ok(_userService.GetUsers());
+        }
+
+        [HttpDelete("users/{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            if (_userService.DeleteUser(id))
+            {
+                return Ok("El usuario fue eliminado correctamente");
+            }
+            return BadRequest("El usuario no fue encontrado");
+            
+            
         }
     }
 }
