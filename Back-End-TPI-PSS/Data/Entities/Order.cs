@@ -14,5 +14,6 @@ namespace Back_End_TPI_PSS.Data.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
+        public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
     }
 }
