@@ -13,8 +13,8 @@ namespace Back_End_TPI_PSS.Data.Entities
         [Required]
         public string Email { get; set; }
         public string Password { get; set; }
-        public string UserType { get; set; }
-        public bool Status { get; set; }
+        public string UserType { get; set; } = "Cliente";
+        public bool Status { get; set; } = false;
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
     }

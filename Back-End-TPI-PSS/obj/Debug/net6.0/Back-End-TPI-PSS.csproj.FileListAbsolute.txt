@@ -67,3 +67,4 @@ C:\Users\lucho\Desktop\PPS TUP\Repo back\BackEnd-API\Back-End-TPI-PSS\obj\Debug\
 C:\Users\lucho\Desktop\PPS TUP\Repo back\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\Back-End-TPI-PSS.pdb
 C:\Users\lucho\Desktop\PPS TUP\Repo back\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\Back-End-TPI-PSS.genruntimeconfig.cache
 C:\Users\lucho\Desktop\PPS TUP\Repo back\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\ref\Back-End-TPI-PSS.dll
+C:\Users\lucho\Desktop\PPS TUP\Repo back\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\BCrypt.Net-Next.dll
