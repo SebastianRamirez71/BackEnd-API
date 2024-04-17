@@ -1,4 +1,6 @@
 using Back_End_TPI_PSS.Context;
+using Back_End_TPI_PSS.Services.Implementations;
+using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back_End_TPI_PSS
@@ -18,6 +20,10 @@ namespace Back_End_TPI_PSS
 
             builder.Services.AddDbContext<PPSContext>(dbContextOptions => dbContextOptions.UseSqlite(
             builder.Configuration["DB:ConnectionString"]));
+
+            #region Inyections
+            builder.Services.AddScoped<IUserService, UserService>();
+            #endregion
 
             var app = builder.Build();
 

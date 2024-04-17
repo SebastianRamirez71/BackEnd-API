@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "H2RgVacwczQm1+0qRwWMOWWCnRb3eiJWSqLJqfVcPF1Cqf3jFENjnCb+L0cZwRC8/r7pUvf9HNvycLIZUhmYdQ==",
+  "dgSpecHash": "8xIx6CDY9zfzS5tHGc5lL/6enHq2lCJ3zKebqDXmNpw40bCPMpxexjfnu/ed5NxdNUqgUu7GSFng75iH5XvZfA==",
   "success": true,
   "projectFilePath": "C:\\Users\\lucho\\Desktop\\PPS TUP\\Repo back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\lucho\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\lucho\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\lucho\\.nuget\\packages\\microsoft.data.sqlite.core\\6.0.29\\microsoft.data.sqlite.core.6.0.29.nupkg.sha512",
     "C:\\Users\\lucho\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.29\\microsoft.entityframeworkcore.6.0.29.nupkg.sha512",
