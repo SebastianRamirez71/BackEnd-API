@@ -24,17 +24,7 @@ namespace Back_End_TPI_PSS.Controllers
             }
             return BadRequest("Ya existe este usuario");
         }
-
-        [HttpPost("users/loginUser")]
-        public IActionResult UserLogin([FromBody] UserLoginDto userLoginDto)
-        {
-            if (_userService.UserLogin(userLoginDto))
-            {
-                return Ok($"Sesión iniciada");
-            }
-            return BadRequest("Email o contraseña incorrectos");
-        }
-
+       
         [HttpGet("users")]
         public IActionResult GetUsers()
         {
@@ -49,8 +39,6 @@ namespace Back_End_TPI_PSS.Controllers
                 return Ok("El usuario fue eliminado correctamente");
             }
             return BadRequest("El usuario no fue encontrado");
-            
-            
         }
     }
 }

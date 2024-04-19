@@ -138,3 +138,10 @@ C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\Back-End-TP
 C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\Back-End-TPI-PSS.genruntimeconfig.cache
 C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\obj\Debug\net6.0\ref\Back-End-TPI-PSS.dll
 C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\sebar\Desktop\BackEnd-API\Back-End-TPI-PSS\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

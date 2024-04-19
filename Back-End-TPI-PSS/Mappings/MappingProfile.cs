@@ -8,9 +8,7 @@ namespace Back_End_TPI_PSS.Mappings
     {
         public MappingProfile()
         {
-       
             CreateMap<User, UserReturnDto>();
-
         }
 
     }

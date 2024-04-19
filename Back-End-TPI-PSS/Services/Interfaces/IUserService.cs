@@ -1,4 +1,5 @@
-﻿using Back_End_TPI_PSS.Data.Models;
+﻿using Back_End_TPI_PSS.Data.Entities;
+using Back_End_TPI_PSS.Data.Models;
 using Back_End_TPI_PSS.Data.Models.UserDTOs;
 
 namespace Back_End_TPI_PSS.Services.Interfaces
@@ -10,5 +11,6 @@ namespace Back_End_TPI_PSS.Services.Interfaces
         public bool UserLogin(UserLoginDto userLoginDto);
         public List<UserReturnDto> GetUsers();
         public bool DeleteUser(int id);
+        public User GetUserByEmail(string email);
     }
 }

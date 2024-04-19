@@ -86,5 +86,9 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
             return false;
         }
+        public User GetUserByEmail(string email)
+        {
+            return _context.Users.SingleOrDefault(e => e.Email == email);
+        }
     }
 }
