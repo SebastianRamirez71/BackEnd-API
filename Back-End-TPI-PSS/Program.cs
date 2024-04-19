@@ -34,14 +34,37 @@ namespace Back_End_TPI_PSS
                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
                  };
              });
-            
+
+
+            builder.Services.AddSwaggerGen(setupAction =>
+            {
+                setupAction.AddSecurityDefinition("BackendPPS-API-BearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    Description = "Ingresar el token para autenticarse."
+                });
+
+                setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "BackendPPS-API-BearerAuth"
+                    } //Tiene que coincidir con el id seteado arriba en la definición
+                    }, new List<string>()
+                }
+                });
+            }); ;
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSwaggerGen(option => { option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme { In = ParameterLocation.Header, Description = "Please enter a valid token", Name = "Authorization", Type = SecuritySchemeType.Http, BearerFormat = "JWT", Scheme = "Bearer" }); option.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } } }); });
 
 
             builder.Services.AddDbContext<PPSContext>(dbContextOptions => dbContextOptions.UseSqlite(
@@ -62,9 +85,8 @@ namespace Back_End_TPI_PSS
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseAuthorization();
 
             app.MapControllers();
 

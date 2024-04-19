@@ -2,15 +2,17 @@
 using Back_End_TPI_PSS.Data.Models.UserDTOs;
 using Back_End_TPI_PSS.Services.Implementations;
 using Back_End_TPI_PSS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back_End_TPI_PSS.Controllers
 {
+    [Authorize] // Este Authorize esta de prueba, luego moverlo segun sea necesario
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserController (IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -24,7 +26,7 @@ namespace Back_End_TPI_PSS.Controllers
             }
             return BadRequest("Ya existe este usuario");
         }
-       
+
         [HttpGet("users")]
         public IActionResult GetUsers()
         {

@@ -17,33 +17,34 @@ namespace Back_End_TPI_PSS.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IUserService _service;
-        public LoginController(IConfiguration config, IUserService service)
+        private readonly IUserService _userService;
+        public LoginController(IConfiguration config, IUserService userService)
         {
             _config = config;
-            _service = service;
+            _userService = userService;
         }
 
         [HttpPost]
-        public IActionResult Authenticate([FromBody] UserLoginDto loginDto)
+        public IActionResult Authenticate([FromBody] UserLoginDto userLoginDto)
         {
-            if (_service.UserLogin(loginDto))
+            if (_userService.UserLogin(userLoginDto))
             {
-                User user = _service.GetUserByEmail(loginDto.Email);
+                User user = _userService.GetUserByEmail(userLoginDto.Email);
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
                 var signature = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 //Los claims son datos en clave->valor que nos permite guardar data del usuario.
-                var claimsForToken = new List<Claim>();
-                claimsForToken.Add(new Claim("email", user.Email));
-                claimsForToken.Add(new Claim("name", user.Name));
-                claimsForToken.Add(new Claim("role", user.UserType));
-
+                var claimsForToken = new List<Claim>
+                {
+                    new Claim("email", user.Email),
+                    new Claim("name", user.Name),
+                    new Claim("role", user.UserType)
+                };
 
                 var jwtSecurityToken = new JwtSecurityToken( //agregar using System.IdentityModel.Tokens.Jwt; Acá es donde se crea el token con toda la data que le pasamos antes.
-                    _config["Authentication:Issuer"],
-                    _config["Authentication:Audience"],
+                    _config["Jwt:Issuer"],
+                    _config["Jwt:Audience"],
                     claimsForToken,
                     DateTime.UtcNow,
                     DateTime.UtcNow.AddHours(1),
