@@ -11,13 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back_End_TPI_PSS.Migrations
 {
     [DbContext(typeof(PPSContext))]
-    [Migration("20240412140128_mig2")]
-    partial class mig2
+    [Migration("20240425134416_RemoveCollectionInColour")]
+    partial class RemoveCollectionInColour
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.29");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Colour", b =>
                 {
@@ -29,26 +30,9 @@ namespace Back_End_TPI_PSS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("Colours");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ColourName = "Azul"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ColourName = "Rojo"
-                        });
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Order", b =>
@@ -151,30 +135,13 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("SizeName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("Sizes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            SizeName = "L"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            SizeName = "XL"
-                        });
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.User", b =>
@@ -211,11 +178,34 @@ namespace Back_End_TPI_PSS.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Colour", b =>
+            modelBuilder.Entity("ColourProduct", b =>
                 {
-                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
-                        .WithMany("Colours")
-                        .HasForeignKey("ProductId");
+                    b.Property<int>("ColoursId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ColoursId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ColoursProducts", (string)null);
+                });
+
+            modelBuilder.Entity("ProductSize", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SizesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProductId", "SizesId");
+
+                    b.HasIndex("SizesId");
+
+                    b.ToTable("SizesProducts", (string)null);
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Order", b =>
@@ -262,23 +252,39 @@ namespace Back_End_TPI_PSS.Migrations
                     b.Navigation("Size");
                 });
 
-            modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Size", b =>
+            modelBuilder.Entity("ColourProduct", b =>
+                {
+                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Colour", null)
+                        .WithMany()
+                        .HasForeignKey("ColoursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductSize", b =>
                 {
                     b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
-                        .WithMany("Sizes")
-                        .HasForeignKey("ProductId");
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Size", null)
+                        .WithMany()
+                        .HasForeignKey("SizesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderLines");
-                });
-
-            modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Product", b =>
-                {
-                    b.Navigation("Colours");
-
-                    b.Navigation("Sizes");
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.User", b =>

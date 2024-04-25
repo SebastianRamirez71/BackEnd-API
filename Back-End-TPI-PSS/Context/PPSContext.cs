@@ -21,12 +21,12 @@ namespace Back_End_TPI_PSS.Context
         {
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Sizes)
-                .WithMany(s => s.Products)
+                .WithMany()
                 .UsingEntity(j => j.ToTable("SizesProducts"));
 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Colours)
-                .WithMany(c => c.Products)
+                .WithMany()
                 .UsingEntity(j => j.ToTable("ColoursProducts"));
 
             modelBuilder.Entity<User>()

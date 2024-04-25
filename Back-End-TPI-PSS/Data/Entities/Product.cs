@@ -10,7 +10,7 @@ namespace Back_End_TPI_PSS.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Description { get; set; } 
-        public string Image { get; set; } 
+        public string Image { get; set; }
         public string Category { get; set; }
         public string Genre { get; set; }
         public decimal Price { get; set; }

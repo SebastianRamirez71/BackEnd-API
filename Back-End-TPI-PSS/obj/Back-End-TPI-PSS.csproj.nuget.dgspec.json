@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucho\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj": {}
+    "C:\\Users\\sebar\\Desktop\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucho\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj": {
+    "C:\\Users\\sebar\\Desktop\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucho\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj",
+        "projectUniqueName": "C:\\Users\\sebar\\Desktop\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj",
         "projectName": "Back-End-TPI-PSS",
-        "projectPath": "C:\\Users\\lucho\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj",
-        "packagesPath": "C:\\Users\\lucho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucho\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
+        "projectPath": "C:\\Users\\sebar\\Desktop\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PSS.csproj",
+        "packagesPath": "C:\\Users\\sebar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sebar\\Desktop\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lucho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sebar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -57,37 +57,37 @@
               "target": "Package",
               "version": "[6.0.0, )"
             },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[6.0.24, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.29, )"
-            },
-            "Microsoft.EntityFrameworkCore.Abstractions": {
-              "target": "Package",
-              "version": "[6.0.29, )"
+              "version": "[7.0.17, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.29, )"
+              "version": "[7.0.17, )"
             },
             "Microsoft.EntityFrameworkCore.Relational": {
               "target": "Package",
-              "version": "[6.0.29, )"
+              "version": "[7.0.17, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[6.0.29, )"
+              "version": "[7.0.17, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.29, )"
+              "version": "[7.0.17, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[6.5.0, )"
             },
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
@@ -95,7 +95,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.15.0, )"
+              "version": "[7.1.2, )"
             }
           },
           "imports": [
@@ -117,7 +117,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

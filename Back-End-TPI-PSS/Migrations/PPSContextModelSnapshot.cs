@@ -15,7 +15,7 @@ namespace Back_End_TPI_PSS.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.29");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Colour", b =>
                 {
@@ -24,6 +24,7 @@ namespace Back_End_TPI_PSS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ColourName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -99,15 +100,19 @@ namespace Back_End_TPI_PSS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Category")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Genre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
@@ -128,6 +133,7 @@ namespace Back_End_TPI_PSS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SizeName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -174,25 +180,25 @@ namespace Back_End_TPI_PSS.Migrations
                     b.Property<int>("ColoursId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductsId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ColoursId", "ProductsId");
+                    b.HasKey("ColoursId", "ProductId");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ColoursProducts", (string)null);
                 });
 
             modelBuilder.Entity("ProductSize", b =>
                 {
-                    b.Property<int>("ProductsId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SizesId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ProductsId", "SizesId");
+                    b.HasKey("ProductId", "SizesId");
 
                     b.HasIndex("SizesId");
 
@@ -253,7 +259,7 @@ namespace Back_End_TPI_PSS.Migrations
 
                     b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
                         .WithMany()
-                        .HasForeignKey("ProductsId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -262,7 +268,7 @@ namespace Back_End_TPI_PSS.Migrations
                 {
                     b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
                         .WithMany()
-                        .HasForeignKey("ProductsId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -4,10 +4,25 @@
 
 namespace Back_End_TPI_PSS.Migrations
 {
-    public partial class mig1 : Migration
+    /// <inheritdoc />
+    public partial class RemoveCollectionInColour : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Colours",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ColourName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Colours", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
@@ -24,6 +39,19 @@ namespace Back_End_TPI_PSS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sizes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SizeName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sizes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,41 +73,51 @@ namespace Back_End_TPI_PSS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Colours",
+                name: "ColoursProducts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ColourName = table.Column<string>(type: "TEXT", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ColoursId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Colours", x => x.Id);
+                    table.PrimaryKey("PK_ColoursProducts", x => new { x.ColoursId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_Colours_Products_ProductId",
+                        name: "FK_ColoursProducts_Colours_ColoursId",
+                        column: x => x.ColoursId,
+                        principalTable: "Colours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ColoursProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sizes",
+                name: "SizesProducts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SizeName = table.Column<string>(type: "TEXT", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SizesId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sizes", x => x.Id);
+                    table.PrimaryKey("PK_SizesProducts", x => new { x.ProductId, x.SizesId });
                     table.ForeignKey(
-                        name: "FK_Sizes_Products_ProductId",
+                        name: "FK_SizesProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SizesProducts_Sizes_SizesId",
+                        column: x => x.SizesId,
+                        principalTable: "Sizes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,8 +184,8 @@ namespace Back_End_TPI_PSS.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Colours_ProductId",
-                table: "Colours",
+                name: "IX_ColoursProducts_ProductId",
+                table: "ColoursProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -176,15 +214,22 @@ namespace Back_End_TPI_PSS.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sizes_ProductId",
-                table: "Sizes",
-                column: "ProductId");
+                name: "IX_SizesProducts_SizesId",
+                table: "SizesProducts",
+                column: "SizesId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ColoursProducts");
+
+            migrationBuilder.DropTable(
                 name: "OrderLines");
+
+            migrationBuilder.DropTable(
+                name: "SizesProducts");
 
             migrationBuilder.DropTable(
                 name: "Colours");
@@ -193,13 +238,13 @@ namespace Back_End_TPI_PSS.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Sizes");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }
