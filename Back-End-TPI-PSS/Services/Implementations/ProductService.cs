@@ -101,5 +101,15 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
             return 1;
         }
+
+        public List<Colour> GetColours()
+        {
+            return _context.Colours.ToList();
+        }
+
+        public List<Size> GetSizes()
+        {
+            return _context.Sizes.ToList();
+        }
     }
 }

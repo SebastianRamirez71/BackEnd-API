@@ -9,6 +9,7 @@ namespace Back_End_TPI_PSS.Services.Interfaces
         public List<Product> GetProducts();
         public int AddSize(string size);
         public int AddColour(string colour);
-
+        public List<Colour> GetColours();
+        public List<Size> GetSizes();
     }
 }

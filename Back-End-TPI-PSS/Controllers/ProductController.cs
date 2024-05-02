@@ -1,4 +1,6 @@
 ﻿using Back_End_TPI_PSS.Data.Models.ProductDTOs;
+using Back_End_TPI_PSS.Data.Models.UserDTOs;
+using Back_End_TPI_PSS.Services.Implementations;
 using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +26,18 @@ namespace Back_End_TPI_PSS.Controllers
         [HttpPost("products")]
         public IActionResult AddProduct(ProductDto productDto)
         {
-            _productService.AddProduct(productDto);
-            return Ok();
+            try
+            {
+                if (_productService.AddProduct(productDto))
+                {
+                    return Ok("Producto agregado");
+                }
+                return BadRequest("Error al agregar el producto.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("sizes")]
@@ -39,6 +51,20 @@ namespace Back_End_TPI_PSS.Controllers
         {
             _productService.AddColour(colour);
             return Ok();
+        }
+
+        [HttpGet("colours")]
+        public IActionResult GetColours()
+        {
+            var coloursToReturn = _productService.GetColours();
+            return Ok(coloursToReturn);
+        }
+
+        [HttpGet("sizes")]
+        public IActionResult GetSizes()
+        {
+            var sizesToReturn = _productService.GetSizes();
+            return Ok(sizesToReturn);
         }
     }
 }

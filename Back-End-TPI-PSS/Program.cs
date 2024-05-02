@@ -78,6 +78,13 @@ namespace Back_End_TPI_PSS
             #endregion
 
             var app = builder.Build();
+            // Configuración de CORS
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:3000") // Reemplaza con el origen de la web
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
