@@ -1,4 +1,5 @@
-﻿using Back_End_TPI_PSS.Data.Models.ProductDTOs;
+﻿using Back_End_TPI_PSS.Data.Models.ColoursAndSizesDTOs;
+using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Data.Models.UserDTOs;
 using Back_End_TPI_PSS.Services.Implementations;
 using Back_End_TPI_PSS.Services.Interfaces;
@@ -15,12 +16,6 @@ namespace Back_End_TPI_PSS.Controllers
         public ProductController(IProductService service)
         {
             _productService = service;
-        }
-
-        [HttpGet("products")]
-        public IActionResult GetProducts()
-        {
-            return Ok(_productService.GetProducts());
         }
 
         [HttpPost("products")]
@@ -40,17 +35,30 @@ namespace Back_End_TPI_PSS.Controllers
             }
         }
 
-        [HttpPost("sizes")]
-        public IActionResult AddSize([FromBody] string size)
-        {
-            _productService.AddSize(size);
-            return Ok();
-        }
         [HttpPost("colours")]
-        public IActionResult AddColour([FromBody] string colour)
+        public IActionResult AddColour([FromBody] ColourDto colourDto)
         {
-            _productService.AddColour(colour);
-            return Ok();
+            if (_productService.AddColour(colourDto))
+            {
+                return Ok("Color agregado");
+            }
+            return BadRequest("Error al agregar el Color.");
+        }
+
+        [HttpPost("sizes")]
+        public IActionResult AddSize([FromBody] SizeDto sizeDto)
+        {
+            if (_productService.AddSize(sizeDto))
+            {
+                return Ok("Talle agregado");
+            }
+            return BadRequest("Error al agregar el Talle.");
+        }
+
+        [HttpGet("products")]
+        public IActionResult GetProducts()
+        {
+            return Ok(_productService.GetProducts());
         }
 
         [HttpGet("colours")]

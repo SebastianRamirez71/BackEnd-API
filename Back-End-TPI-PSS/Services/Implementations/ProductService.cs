@@ -1,5 +1,6 @@
 ﻿using Back_End_TPI_PSS.Context;
 using Back_End_TPI_PSS.Data.Entities;
+using Back_End_TPI_PSS.Data.Models.ColoursAndSizesDTOs;
 using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 
 using Back_End_TPI_PSS.Services.Interfaces;
@@ -70,37 +71,41 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return _context.Sizes.Any(s => s.SizeName == size);
         }
 
-        public int AddColour(string colour)
+        public bool AddColour(ColourDto colourDto)
         {
-            bool existingColour = CheckIfColourExists(colour);
-            if (!existingColour)
+            var existingColour = _context.Colours.FirstOrDefault(c => c.ColourName.ToLower() == colourDto.ColourName.ToLower());
+
+            if (existingColour == null)
             {
-                Colour colourToAdd = new ()
+                Colour colourToAdd = new Colour
                 {
-                    ColourName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(colour.ToLower()),
+                    ColourName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(colourDto.ColourName.ToLower()),
                 };
                 _context.Colours.Add(colourToAdd);
                 _context.SaveChanges();
-                return colourToAdd.Id;
+                return true;
             }
-            return 1;
+            return false;
         }
 
-        public int AddSize(string size)
+
+        public bool AddSize(SizeDto sizeDto)
         {
-            bool existingSize = CheckIfSizeExists(size);
-            if (!existingSize)
+            var existingSize = _context.Sizes.FirstOrDefault(c => c.SizeName.ToLower() == sizeDto.SizeName.ToLower());
+
+            if (existingSize == null)
             {
-                Size sizeToAdd = new()
+                Size sizeToAdd = new Size
                 {
-                    SizeName = size.ToUpper(),
+                    SizeName = sizeDto.SizeName.ToUpper(),
                 };
                 _context.Sizes.Add(sizeToAdd);
                 _context.SaveChanges();
-                return sizeToAdd.Id;
+                return true;
             }
-            return 1;
+            return false;
         }
+
 
         public List<Colour> GetColours()
         {
