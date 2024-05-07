@@ -1,4 +1,4 @@
-﻿namespace Back_End_TPI_PSS.Data.Models.ColoursAndSizesDTOs
+﻿namespace Back_End_TPI_PSS.Data.Models.ProductDTOs
 {
     public class SizeDto
     {

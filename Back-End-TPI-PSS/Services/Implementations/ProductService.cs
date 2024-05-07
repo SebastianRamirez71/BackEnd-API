@@ -1,6 +1,5 @@
 ﻿using Back_End_TPI_PSS.Context;
 using Back_End_TPI_PSS.Data.Entities;
-using Back_End_TPI_PSS.Data.Models.ColoursAndSizesDTOs;
 using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 
 using Back_End_TPI_PSS.Services.Interfaces;
@@ -32,7 +31,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 Description = productDto.Description,
                 Genre = productDto.Genre,
                 Price = productDto.Price,
-                Category = productDto.Category,
                 Image = productDto.Image,
                 Status = true
             };
@@ -106,6 +104,23 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return false;
         }
 
+        public bool AddCategory(CategoryDto categoryDto)
+        {
+            var existingCategory = _context.Categories.FirstOrDefault(c => c.CategoryName.ToLower() == categoryDto.CategoryName.ToLower());
+
+            if (existingCategory == null)
+            {
+                Category categoryToAdd = new Category
+                {
+                    CategoryName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categoryDto.CategoryName.ToLower()),
+                };
+                _context.Categories.Add(categoryToAdd);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
 
         public List<Colour> GetColours()
         {
@@ -115,6 +130,11 @@ namespace Back_End_TPI_PSS.Services.Implementations
         public List<Size> GetSizes()
         {
             return _context.Sizes.ToList();
+        }
+
+        public List<Category> GetCategories()
+        {
+            return _context.Categories.ToList();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Back_End_TPI_PSS.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Size> Sizes { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public PPSContext(DbContextOptions<PPSContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -28,6 +29,11 @@ namespace Back_End_TPI_PSS.Context
                 .HasMany(p => p.Colours)
                 .WithMany()
                 .UsingEntity(j => j.ToTable("ColoursProducts"));
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Categories)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("CategoriesProducts"));
 
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Orders)

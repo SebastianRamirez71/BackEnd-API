@@ -1,9 +1,5 @@
-﻿using Back_End_TPI_PSS.Data.Models.ColoursAndSizesDTOs;
-using Back_End_TPI_PSS.Data.Models.ProductDTOs;
-using Back_End_TPI_PSS.Data.Models.UserDTOs;
-using Back_End_TPI_PSS.Services.Implementations;
+﻿using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End_TPI_PSS.Controllers
@@ -55,6 +51,16 @@ namespace Back_End_TPI_PSS.Controllers
             return BadRequest("Error al agregar el Talle.");
         }
 
+        [HttpPost("categories")]
+        public IActionResult AddCategories([FromBody] CategoryDto categoryDto)
+        {
+            if (_productService.AddCategory(categoryDto))
+            {
+                return Ok("Categoría agregado");
+            }
+            return BadRequest("Error al agregar la Categoría.");
+        }
+
         [HttpGet("products")]
         public IActionResult GetProducts()
         {
@@ -73,6 +79,13 @@ namespace Back_End_TPI_PSS.Controllers
         {
             var sizesToReturn = _productService.GetSizes();
             return Ok(sizesToReturn);
+        }
+
+        [HttpGet("categories")]
+        public IActionResult GetCategories()
+        {
+            var categoriesToReturn = _productService.GetCategories();
+            return Ok(categoriesToReturn);
         }
     }
 }

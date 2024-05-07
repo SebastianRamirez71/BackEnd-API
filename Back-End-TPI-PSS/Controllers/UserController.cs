@@ -17,7 +17,7 @@ namespace Back_End_TPI_PSS.Controllers
             _userService = userService;
         }
 
-        [HttpPost("users/createUser")]
+        [HttpPost("users")]
         public IActionResult CreateUser([FromBody] UserDto userDto)
         {
             if (_userService.CreateUser(userDto))
