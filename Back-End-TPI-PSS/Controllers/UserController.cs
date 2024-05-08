@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Authorize] // Este Authorize esta de prueba, luego moverlo segun sea necesario
+
     public class UserController : Controller
     {
         private readonly IUserService _userService;

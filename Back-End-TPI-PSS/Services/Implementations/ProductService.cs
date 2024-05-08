@@ -5,6 +5,7 @@ using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Linq;
 
 namespace Back_End_TPI_PSS.Services.Implementations
 {
@@ -135,6 +136,23 @@ namespace Back_End_TPI_PSS.Services.Implementations
         public List<Category> GetCategories()
         {
             return _context.Categories.ToList();
+        }
+
+        public List<Product> OrderProductsByPrice(bool orderByLow)
+        {
+            var products = _context.Products
+                .Include(p => p.Colours)
+                .Include(p => p.Sizes)
+                .ToList();
+
+            if (orderByLow)
+            {
+                return products.OrderBy(x => Convert.ToDouble(x.Price)).ToList();
+            }
+            else
+            {
+                return products.OrderByDescending(x => Convert.ToDouble(x.Price)).ToList();
+            }
         }
     }
 }

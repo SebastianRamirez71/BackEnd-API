@@ -11,7 +11,7 @@ namespace Back_End_TPI_PSS.Data.Entities
         public bool Status { get; set; } = true;
         public decimal TotalPrice { get; set; }
 
-        // agregar Direccion cuando vaya a comprar
+        public string Address { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

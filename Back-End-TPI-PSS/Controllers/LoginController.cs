@@ -37,6 +37,7 @@ namespace Back_End_TPI_PSS.Controllers
                 //Los claims son datos en clave->valor que nos permite guardar data del usuario.
                 var claimsForToken = new List<Claim>
                 {
+                    new Claim("sub", user.Id.ToString()),
                     new Claim("email", user.Email),
                     new Claim("name", user.Name),
                     new Claim("role", user.UserType)

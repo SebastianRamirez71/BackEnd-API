@@ -66,6 +66,11 @@ namespace Back_End_TPI_PSS.Controllers
         {
             return Ok(_productService.GetProducts());
         }
+        [HttpGet("productsOrderBy")]
+        public IActionResult GetProductsLow(bool orderBy)
+        {
+            return Ok(_productService.OrderProductsByPrice(orderBy));
+        }
 
         [HttpGet("colours")]
         public IActionResult GetColours()

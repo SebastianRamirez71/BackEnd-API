@@ -13,6 +13,7 @@ namespace Back_End_TPI_PSS.Services.Interfaces
         public List<Colour> GetColours();
         public List<Size> GetSizes();
         public List<Category> GetCategories();
+        public List<Product> OrderProductsByPrice(bool orderByLow);
 
     }
 }

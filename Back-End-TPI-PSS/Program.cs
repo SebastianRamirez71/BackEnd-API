@@ -75,6 +75,7 @@ namespace Back_End_TPI_PSS
             #region Inyections
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             #endregion
 
             var app = builder.Build();
