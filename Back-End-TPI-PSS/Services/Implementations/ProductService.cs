@@ -10,20 +10,41 @@ using System.Linq;
 namespace Back_End_TPI_PSS.Services.Implementations
 {
     public class ProductService : IProductService
-    {                                               // solo para tipo de usuario : admin/empleado
+    {                                              
         private readonly PPSContext _context;
         public ProductService(PPSContext context)
         {
             _context = context;
         }
 
-        public List<Product> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts(string? order, string? genre)
         {
-            return _context.Products
+            var productsQuery = _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
-                .ToList();
+                .Include(p => p.Categories)
+                .AsQueryable(); // convierte la coleccion en un DbSet
+
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                productsQuery = productsQuery.Where(p => p.Genre == genre);
+            }
+
+            var products = await productsQuery.ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(order))
+            {
+                products = order == "desc"
+                    ? products.OrderByDescending(x => Convert.ToDouble(x.Price)).ToList()
+                    : order == "asc" ? products.OrderBy(x => Convert.ToDouble(x.Price)).ToList()
+                    : products;
+            }
+
+            return products;
         }
+
+
 
         public bool AddProduct(ProductDto productDto)
         {
@@ -34,6 +55,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 Price = productDto.Price,
                 Image = productDto.Image,
                 Status = true
+                
             };
             
             foreach (var colourId in productDto.ColourId)
@@ -54,6 +76,16 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     throw new ArgumentException($"El talle con el ID: {sizeId} no existe");
                 }
                 newProduct.Sizes.Add(existingSize);
+            }
+
+            foreach (var categoryId in productDto.Category)
+            {
+                var existingCategory = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                if (existingCategory == null)
+                {
+                    throw new ArgumentException($"La categoria con el  ID: {categoryId} no existe");
+                }
+                newProduct.Categories.Add(existingCategory);
             }
 
             _context.Products.Add(newProduct);
@@ -136,23 +168,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
         public List<Category> GetCategories()
         {
             return _context.Categories.ToList();
-        }
-
-        public List<Product> OrderProductsByPrice(bool orderByLow)
-        {
-            var products = _context.Products
-                .Include(p => p.Colours)
-                .Include(p => p.Sizes)
-                .ToList();
-
-            if (orderByLow)
-            {
-                return products.OrderBy(x => Convert.ToDouble(x.Price)).ToList();
-            }
-            else
-            {
-                return products.OrderByDescending(x => Convert.ToDouble(x.Price)).ToList();
-            }
         }
     }
 }

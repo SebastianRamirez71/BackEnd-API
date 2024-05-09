@@ -1,4 +1,5 @@
-﻿using Back_End_TPI_PSS.Data.Models.ProductDTOs;
+﻿using Back_End_TPI_PSS.Data.Entities;
+using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,14 @@ namespace Back_End_TPI_PSS.Controllers
             _productService = service;
         }
 
-        [HttpPost("products")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? order, string? genre)
+        {
+            var products = await _productService.GetProducts(order, genre);
+            return Ok(products);
+        }
+
+        [HttpPost]
         public IActionResult AddProduct(ProductDto productDto)
         {
             try
@@ -61,16 +69,7 @@ namespace Back_End_TPI_PSS.Controllers
             return BadRequest("Error al agregar la Categoría.");
         }
 
-        [HttpGet("products")]
-        public IActionResult GetProducts()
-        {
-            return Ok(_productService.GetProducts());
-        }
-        [HttpGet("productsOrderBy")]
-        public IActionResult GetProductsLow(bool orderBy)
-        {
-            return Ok(_productService.OrderProductsByPrice(orderBy));
-        }
+       
 
         [HttpGet("colours")]
         public IActionResult GetColours()

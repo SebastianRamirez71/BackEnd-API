@@ -11,7 +11,7 @@ namespace Back_End_TPI_PSS.Data.Models.ProductDTOs
         public decimal Price { get; set; }
         public string Image { get; set; }
         [Required(ErrorMessage = "La categoria es obligatoria")]
-        public string Category { get; set; }
+        public List<int> Category { get; set; }
         public string Genre { get; set; }
         public List<int> ColourId { get; set; }
         public List<int> SizeId { get; set; }
