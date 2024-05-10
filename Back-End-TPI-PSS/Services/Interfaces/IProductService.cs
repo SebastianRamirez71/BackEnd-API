@@ -13,5 +13,15 @@ namespace Back_End_TPI_PSS.Services.Interfaces
         public List<Colour> GetColours();
         public List<Size> GetSizes();
         public List<Category> GetCategories();
+        public bool EditProductById(int id, ProductToEditDto productToEditDto);
+        public void AddProduct(int id);
+        public void DeleteProduct(int id);
+        public void AddColor(int id);
+        public void DeleteColor(int id);
+        public void AddSize(int id);
+        public void DeleteSize(int id);
+        public void AddCategory(int id);
+        public void DeleteCategory(int id);
+
     }
 }

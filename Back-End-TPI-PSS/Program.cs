@@ -15,7 +15,7 @@ namespace Back_End_TPI_PSS
         {
             var builder = WebApplication.CreateBuilder(args);
 
-           
+
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
             var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
             var jwtAudience = builder.Configuration.GetSection("Jwt:Audience").Get<string>();

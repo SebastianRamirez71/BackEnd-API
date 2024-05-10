@@ -3,6 +3,7 @@ using System;
 using Back_End_TPI_PSS.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back_End_TPI_PSS.Migrations
 {
     [DbContext(typeof(PPSContext))]
-    partial class PPSContextModelSnapshot : ModelSnapshot
+    [Migration("20240510042330_AddedFKtoCategories")]
+    partial class AddedFKtoCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
@@ -27,10 +30,15 @@ namespace Back_End_TPI_PSS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("Status")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Categories");
                 });
@@ -203,21 +211,6 @@ namespace Back_End_TPI_PSS.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CategoryProduct", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CategoriesId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CategoriesProducts", (string)null);
-                });
-
             modelBuilder.Entity("ColourProduct", b =>
                 {
                     b.Property<int>("ColoursId")
@@ -246,6 +239,17 @@ namespace Back_End_TPI_PSS.Migrations
                     b.HasIndex("SizesId");
 
                     b.ToTable("SizesProducts", (string)null);
+                });
+
+            modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Category", b =>
+                {
+                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", "Product")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Order", b =>
@@ -292,21 +296,6 @@ namespace Back_End_TPI_PSS.Migrations
                     b.Navigation("Size");
                 });
 
-            modelBuilder.Entity("CategoryProduct", b =>
-                {
-                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ColourProduct", b =>
                 {
                     b.HasOne("Back_End_TPI_PSS.Data.Entities.Colour", null)
@@ -340,6 +329,11 @@ namespace Back_End_TPI_PSS.Migrations
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderLines");
+                });
+
+            modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Product", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.User", b =>

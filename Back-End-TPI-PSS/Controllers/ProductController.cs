@@ -15,14 +15,14 @@ namespace Back_End_TPI_PSS.Controllers
             _productService = service;
         }
 
-        [HttpGet]
+        [HttpGet("products")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? order, string? genre)
         {
             var products = await _productService.GetProducts(order, genre);
             return Ok(products);
         }
 
-        [HttpPost]
+        [HttpPost("products")]
         public IActionResult AddProduct(ProductDto productDto)
         {
             try
@@ -69,7 +69,15 @@ namespace Back_End_TPI_PSS.Controllers
             return BadRequest("Error al agregar la Categoría.");
         }
 
-       
+        [HttpPut("products/edit/{id}")]
+        public IActionResult EditProductById(int id, ProductToEditDto productToEditDto)
+        {
+            if (_productService.EditProductById(id, productToEditDto))
+            {
+                return Ok($"Se ha editado el producto con el ID: {id}");
+            }
+            return BadRequest($"No se ha podido editar el producto con el ID: {id}");
+        }
 
         [HttpGet("colours")]
         public IActionResult GetColours()
@@ -91,5 +99,62 @@ namespace Back_End_TPI_PSS.Controllers
             var categoriesToReturn = _productService.GetCategories();
             return Ok(categoriesToReturn);
         }
+
+        [HttpPut("products/{id}")]
+        public IActionResult AddProduct(int id)
+        {
+            _productService.AddProduct(id);
+            return Ok($"Se ha dado de alta al producto con el ID : {id}");
+        }
+
+        [HttpDelete("products/{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            _productService.DeleteProduct(id);
+            return Ok($"Se ha dado de baja al producto con el ID : {id}");
+        }
+
+        [HttpPut("colours/{id}")]
+        public IActionResult AddColor(int id)
+        {
+            _productService.AddColor(id);
+            return Ok($"Se ha dado de alta al color con el ID : {id}");
+        }
+
+        [HttpDelete("colours/{id}")]
+        public IActionResult DeleteColor(int id)
+        {
+            _productService.DeleteColor(id);
+            return Ok($"Se ha dado de baja al color con el ID : {id}");
+        }
+
+        [HttpPut("sizes/{id}")]
+        public IActionResult AddSize(int id)
+        {
+            _productService.AddSize(id);
+            return Ok($"Se ha dado de alta al tamaño con el ID : {id}");
+        }
+
+        [HttpDelete("sizes/{id}")]
+        public IActionResult DeleteSize(int id)
+        {
+            _productService.DeleteSize(id);
+            return Ok($"Se ha dado de baja al tamaño con el ID : {id}");
+        }
+
+        [HttpPut("categories/{id}")]
+        public IActionResult AddCategory(int id)
+        {
+            _productService.AddCategory(id);
+            return Ok($"Se ha dado de alta a la categoría con el ID : {id}");
+        }
+
+        [HttpDelete("categories/{id}")]
+        public IActionResult DeleteCategory(int id)
+        {
+            _productService.DeleteCategory(id);
+            return Ok($"Se ha dado de baja a la categoría con el ID : {id}");
+        }
+
     }
 }

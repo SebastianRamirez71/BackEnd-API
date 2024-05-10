@@ -35,6 +35,7 @@ namespace Back_End_TPI_PSS.Context
                 .WithMany()
                 .UsingEntity(j => j.ToTable("CategoriesProducts"));
 
+
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Orders)
                 .WithOne()
