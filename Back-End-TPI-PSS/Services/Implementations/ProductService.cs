@@ -26,6 +26,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .Include(p => p.Categories)
+                .Where(p => p.Status == true)
                 .AsQueryable(); // convierte la colección en un DbSet
 
             if (!string.IsNullOrWhiteSpace(genre))
@@ -46,13 +47,12 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return products;
         }
 
-        public List<Product> GetProducts()
+        public List<Product> GetAllProducts()
         {
             return _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .Include(p => p.Categories)
-                .Where(p => p.Status == true)
                 .ToList();
         }
 
@@ -96,6 +96,14 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 _context.SaveChanges();
                 return true;
             }
+            if (existingProduct != null && existingProduct.Status == false)
+            {
+                existingProduct.Status = true;
+                _context.Products.Update(existingProduct);
+                _context.SaveChanges();
+                return true;
+
+            }
             return false;
         }
 
@@ -124,6 +132,14 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 _context.SaveChanges();
                 return true;
             }
+            if (existingColour != null && existingColour.Status == false)
+            {
+                existingColour.Status = true;
+                _context.Colours.Update(existingColour);
+                _context.SaveChanges();
+                return true;
+
+            }
             return false;
         }
 
@@ -139,6 +155,18 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     Status = true
                 };
                 _context.Sizes.Add(sizeToAdd);
+                _context.SaveChanges();
+                return true;
+
+            }
+
+            // Chequea si el color que se agrega esta en la db y si su estado es falso se cambia a true
+            // De esta manera no se duplican registros. Lo mismo debajo para talles y categorias.
+
+            if (existingSize != null && existingSize.Status == false)
+            {
+                existingSize.Status = true;
+                _context.Sizes.Update(existingSize);
                 _context.SaveChanges();
                 return true;
             }
@@ -159,6 +187,15 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 _context.Categories.Add(categoryToAdd);
                 _context.SaveChanges();
                 return true;
+                
+            }
+            if (existingCategory != null && existingCategory.Status == false)
+            {
+                existingCategory.Status = true;
+                _context.Categories.Update(existingCategory);
+                _context.SaveChanges();
+                return true;
+
             }
             return false;
         }
@@ -205,6 +242,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 productToEdit.Price = productToEditDto.Price;
                 productToEdit.Image = productToEditDto.Image;
                 productToEdit.Genre = productToEditDto.Genre;
+                productToEdit.Status = productToEditDto.Status;
+
 
                 // Eliminar todas las categorías existentes del producto
                 productToEdit.Categories.Clear();
@@ -264,11 +303,28 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
         }
 
+        // Chequear
+        public void ChangeProductStatus(int id)
+        {
+            Product productToChangeStatus = _context.Products.FirstOrDefault(p => p.Id == id);
+            
+            if(productToChangeStatus != null && productToChangeStatus.Status == true)
+            {
+                productToChangeStatus.Status = false;
+                _context.Update(productToChangeStatus);
+                _context.SaveChanges();
+            } else if(productToChangeStatus != null && productToChangeStatus.Status == false)
+            {
+                productToChangeStatus.Status = true;
+                _context.Update(productToChangeStatus);
+                _context.SaveChanges();
+            }
+        }
+
         public void AddProduct(int id)
         {
             UpdateEntityStatus<Product>(id, true);
         }
-
         public void DeleteProduct(int id)
         {
             UpdateEntityStatus<Product>(id, false);

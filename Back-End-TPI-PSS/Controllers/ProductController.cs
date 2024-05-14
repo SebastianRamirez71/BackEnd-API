@@ -100,6 +100,21 @@ namespace Back_End_TPI_PSS.Controllers
             return Ok(categoriesToReturn);
         }
 
+        [HttpGet("allProducts")]
+        public IActionResult GetAllProducts()
+        {
+            var productsToReturn = _productService.GetAllProducts();
+            return Ok(productsToReturn);
+        }
+
+        // Chequear xD
+        [HttpPut("products/status/{id}")]
+        public IActionResult ChangeProductStatus(int id)
+        {
+            _productService.ChangeProductStatus(id);
+            return Ok($"Se cambió el estado del producto");
+        }
+
         [HttpPut("products/{id}")]
         public IActionResult AddProduct(int id)
         {
