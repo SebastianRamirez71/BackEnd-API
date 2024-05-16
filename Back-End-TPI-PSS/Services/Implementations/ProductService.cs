@@ -20,34 +20,33 @@ namespace Back_End_TPI_PSS.Services.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(string? order, string? genre)
-        {
+        public async Task<IEnumerable<Product>> GetProducts(string? priceOrder,string? genre)
+        { 
             var productsQuery = _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .Include(p => p.Categories)
-                .Where(p => p.Status == true)
-                .AsQueryable(); // convierte la colección en un DbSet
+                .Where(x => x.Status == true)
+                .AsQueryable(); 
 
             if (!string.IsNullOrWhiteSpace(genre))
             {
                 productsQuery = productsQuery.Where(p => p.Genre == genre);
-            }
+            }    
 
             var products = await productsQuery.ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(order))
+            if (!string.IsNullOrWhiteSpace(priceOrder))
             {
-                products = order == "desc"
+                products = priceOrder == "desc"
                     ? products.OrderByDescending(x => Convert.ToDouble(x.Price)).ToList()
-                    : order == "asc" ? products.OrderBy(x => Convert.ToDouble(x.Price)).ToList()
+                    : priceOrder == "asc" ? products.OrderBy(x => Convert.ToDouble(x.Price)).ToList()
                     : products;
             }
 
             return products;
         }
-
-        public List<Product> GetAllProducts()
+        public async Task <IEnumerable<Product>> GetAllProducts()
         {
             return _context.Products
                 .Include(p => p.Colours)
@@ -69,7 +68,9 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     Category = productDto.Category,
                     Price = productDto.Price,
                     Image = productDto.Image,
-                    Status = true
+                    Status = true,
+                    CreatedDate = productDto.CreatedDate = DateTime.Now
+                    
                 };
             
 
@@ -242,7 +243,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 productToEdit.Price = productToEditDto.Price;
                 productToEdit.Image = productToEditDto.Image;
                 productToEdit.Genre = productToEditDto.Genre;
-                productToEdit.Status = productToEditDto.Status;
+                productToEdit.Status = true;
 
 
                 // Eliminar todas las categorías existentes del producto

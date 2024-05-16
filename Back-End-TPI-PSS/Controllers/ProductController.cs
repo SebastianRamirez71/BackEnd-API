@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -16,10 +16,14 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? order, string? genre)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? priceOrder, string? genre)
         {
-            var products = await _productService.GetProducts(order, genre);
-            return Ok(products);
+            return Ok(await _productService.GetProducts(priceOrder, genre));
+        }
+        [HttpGet("allproducts")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        {
+            return Ok( await _productService.GetAllProducts());
         }
 
         [HttpPost("products")]
@@ -98,13 +102,6 @@ namespace Back_End_TPI_PSS.Controllers
         {
             var categoriesToReturn = _productService.GetCategories();
             return Ok(categoriesToReturn);
-        }
-
-        [HttpGet("allProducts")]
-        public IActionResult GetAllProducts()
-        {
-            var productsToReturn = _productService.GetAllProducts();
-            return Ok(productsToReturn);
         }
 
         // Chequear xD

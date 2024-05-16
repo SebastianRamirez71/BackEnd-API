@@ -15,6 +15,7 @@ namespace Back_End_TPI_PSS.Data.Entities
         public string Category { get; set; }
         public decimal Price { get; set; }
         public bool Status { get; set; }
+        public DateTime CreatedDate { get; set; }
         public ICollection<Colour> Colours { get; set; } = new List<Colour>();
         public ICollection<Size> Sizes { get; set; } = new List<Size>();
         public ICollection<Category> Categories { get; set; } = new List<Category>();

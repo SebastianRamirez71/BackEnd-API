@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-
+    [ApiController]
+    [Route("api/")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

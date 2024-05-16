@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     [Authorize]
     public class OrderController : ControllerBase
@@ -18,7 +18,7 @@ namespace Back_End_TPI_PSS.Controllers
             _orderService = service;
         }
 
-        [HttpPost("order")]
+        [HttpPost("orders")]
         public IActionResult AddOrder([FromBody] OrderDto orderDto)
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
@@ -43,7 +43,7 @@ namespace Back_End_TPI_PSS.Controllers
             return Forbid();
         }
 
-        [HttpPost("orderline")]
+        [HttpPost("orderlines")]
 
         public IActionResult AddProductToProductLine(OrderLineDto orderLineDto)
         {
@@ -77,7 +77,7 @@ namespace Back_End_TPI_PSS.Controllers
             return Forbid();
         }
 
-        [HttpGet("order")]
+        [HttpGet("orders")]
         public IActionResult GetAllOrders()
         {
             string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;

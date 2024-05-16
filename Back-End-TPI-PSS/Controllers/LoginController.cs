@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace Back_End_TPI_PSS.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] UserLoginDto userLoginDto)
         {
             if (_userService.UserLogin(userLoginDto))
