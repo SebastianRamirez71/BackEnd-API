@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Back_End_TPI_PSS.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Back_End_TPI_PSS.Data.Models.ProductDTOs
 {
@@ -13,5 +15,6 @@ namespace Back_End_TPI_PSS.Data.Models.ProductDTOs
         public DateTime CreatedDate { get; set;} = DateTime.Now;
         public List<int> ColourId { get; set; }
         public List<int> SizeId { get; set; }
+        public List<int> CategoryId { get; set; }
     }
 }

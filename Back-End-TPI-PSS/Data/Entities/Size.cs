@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Back_End_TPI_PSS.Services.Interfaces;
 
 namespace Back_End_TPI_PSS.Data.Entities
 {
-    public class Size
+    public class Size : IStatusEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

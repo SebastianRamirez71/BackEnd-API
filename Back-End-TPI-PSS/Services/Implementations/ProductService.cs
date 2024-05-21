@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Back_End_TPI_PSS.Services.Implementations
 {
@@ -20,19 +21,19 @@ namespace Back_End_TPI_PSS.Services.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(string? priceOrder,string? genre)
-        { 
+        public async Task<IEnumerable<Product>> GetProducts(string? priceOrder, string? genre)
+        {
             var productsQuery = _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .Include(p => p.Categories)
                 .Where(x => x.Status == true)
-                .AsQueryable(); 
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(genre))
             {
                 productsQuery = productsQuery.Where(p => p.Genre == genre);
-            }    
+            }
 
             var products = await productsQuery.ToListAsync();
 
@@ -46,7 +47,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
             return products;
         }
-        public async Task <IEnumerable<Product>> GetAllProducts()
+
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
             return _context.Products
                 .Include(p => p.Colours)
@@ -59,51 +61,68 @@ namespace Back_End_TPI_PSS.Services.Implementations
         {
             var existingProduct = _context.Products.FirstOrDefault(p => p.Description == productDto.Description);
 
-            if(existingProduct == null)
+            if (existingProduct == null)
             {
-                Product newProduct = new Product()
+                foreach (var categoryId in productDto.CategoryId)
                 {
-                    Description = productDto.Description,
-                    Genre = productDto.Genre,
-                    Category = productDto.Category,
-                    Price = productDto.Price,
-                    Image = productDto.Image,
-                    Status = true,
-                    CreatedDate = productDto.CreatedDate = DateTime.Now
-                    
-                };
-            
+                    var selectedCategory = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                    if (selectedCategory == null)
+                    {
+                        throw new ArgumentException($"La categoría con el ID: {categoryId} no existe");
+                    }
 
-            foreach (var colourId in productDto.ColourId)
-            {
-                var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
-                if (existingColour == null)
-                {
-                    throw new ArgumentException($"El Color con el  ID: {colourId} no existe");
-                }
-                    newProduct.Colours.Add(existingColour);
-            }
+                    Product newProduct = new Product()
+                    {
+                        Description = productDto.Description,
+                        Genre = productDto.Genre,
+                        Category = selectedCategory.CategoryName, // Asignar el nombre de la categoría seleccionada
+                        Price = productDto.Price,
+                        Image = productDto.Image,
+                        CreatedDate = productDto.CreatedDate = DateTime.Now,
+                        Status = true
+                    };
 
-            foreach (var sizeId in productDto.SizeId)
-            {
-                var existingSize = _context.Sizes.FirstOrDefault(s => s.Id == sizeId);
-                if (existingSize == null)
-                {
-                    throw new ArgumentException($"El talle con el ID: {sizeId} no existe");
+                    foreach (var colourId in productDto.ColourId)
+                    {
+                        var existingColour = _context.Colours.FirstOrDefault(c => c.Id == colourId);
+                        if (existingColour == null)
+                        {
+                            throw new ArgumentException($"El Color con el ID: {colourId} no existe");
+                        }
+                        newProduct.Colours.Add(existingColour);
+                    }
+
+                    foreach (var sizeId in productDto.SizeId)
+                    {
+                        var existingSize = _context.Sizes.FirstOrDefault(s => s.Id == sizeId);
+                        if (existingSize == null)
+                        {
+                            throw new ArgumentException($"El talle con el ID: {sizeId} no existe");
+                        }
+                        newProduct.Sizes.Add(existingSize);
+                    }
+
+                    foreach (var categoryID in productDto.CategoryId)
+                    {
+                        var existingCategory = _context.Categories.FirstOrDefault(s => s.Id == categoryID);
+                        if (existingCategory == null)
+                        {
+                            throw new ArgumentException($"El talle con el ID: {categoryID} no existe");
+                        }
+                        newProduct.Categories.Add(existingCategory);
+                    }
+
+                    _context.Products.Add(newProduct);
+                    _context.SaveChanges();
                 }
-                    newProduct.Sizes.Add(existingSize);
-            }
-                _context.Products.Add(newProduct);
-                _context.SaveChanges();
                 return true;
             }
-            if (existingProduct != null && existingProduct.Status == false)
+            else if (existingProduct != null && existingProduct.Status == false)
             {
                 existingProduct.Status = true;
                 _context.Products.Update(existingProduct);
                 _context.SaveChanges();
                 return true;
-
             }
             return false;
         }
@@ -188,7 +207,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 _context.Categories.Add(categoryToAdd);
                 _context.SaveChanges();
                 return true;
-                
+
             }
             if (existingCategory != null && existingCategory.Status == false)
             {
@@ -287,78 +306,42 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return false;
         }
 
-
-
-        public void UpdateEntityStatus<T>(int entityId, bool status) where T : class
+        public void ChangeEntityStatus<T>(int entityId) where T : class, IStatusEntity
         {
-            var entity = _context.Set<T>().Find(entityId);
-            if (entity != null)
+            var entityToChangeStatus = _context.Set<T>().FirstOrDefault(e => e.Id == entityId);
+
+            if (entityToChangeStatus != null && entityToChangeStatus.Status == true)
             {
-                var property = entity.GetType().GetProperty("Status");
-                if (property != null && property.PropertyType == typeof(bool))
-                {
-                    property.SetValue(entity, status);
-                    _context.Set<T>().Update(entity);
-                    _context.SaveChanges();
-                }
+                entityToChangeStatus.Status = false;
+                _context.Update(entityToChangeStatus);
+                _context.SaveChanges();
+            }
+            else if (entityToChangeStatus != null && entityToChangeStatus.Status == false)
+            {
+                entityToChangeStatus.Status = true;
+                _context.Update(entityToChangeStatus);
+                _context.SaveChanges();
             }
         }
 
-        // Chequear
         public void ChangeProductStatus(int id)
         {
-            Product productToChangeStatus = _context.Products.FirstOrDefault(p => p.Id == id);
-            
-            if(productToChangeStatus != null && productToChangeStatus.Status == true)
-            {
-                productToChangeStatus.Status = false;
-                _context.Update(productToChangeStatus);
-                _context.SaveChanges();
-            } else if(productToChangeStatus != null && productToChangeStatus.Status == false)
-            {
-                productToChangeStatus.Status = true;
-                _context.Update(productToChangeStatus);
-                _context.SaveChanges();
-            }
+            ChangeEntityStatus<Product>(id);
         }
 
-        public void AddProduct(int id)
+        public void ChangeColourStatus(int id)
         {
-            UpdateEntityStatus<Product>(id, true);
-        }
-        public void DeleteProduct(int id)
-        {
-            UpdateEntityStatus<Product>(id, false);
+            ChangeEntityStatus<Colour>(id);
         }
 
-        public void AddColor(int id)
+        public void ChangeSizeStatus(int id)
         {
-            UpdateEntityStatus<Colour>(id, true);
+            ChangeEntityStatus<Size>(id);
         }
 
-        public void DeleteColor(int id)
+        public void ChangeCategoryStatus(int id)
         {
-            UpdateEntityStatus<Colour>(id, false);
-        }
-
-        public void AddSize(int id)
-        {
-            UpdateEntityStatus<Size>(id, true);
-        }
-
-        public void DeleteSize(int id)
-        {
-            UpdateEntityStatus<Size>(id, false);
-        }
-
-        public void AddCategory(int id)
-        {
-            UpdateEntityStatus<Category>(id, true);
-        }
-
-        public void DeleteCategory(int id)
-        {
-            UpdateEntityStatus<Category>(id, false);
+            ChangeEntityStatus<Category>(id);
         }
     }
 }

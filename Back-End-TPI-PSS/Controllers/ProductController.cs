@@ -104,69 +104,32 @@ namespace Back_End_TPI_PSS.Controllers
             return Ok(categoriesToReturn);
         }
 
-        // Chequear xD
-        [HttpPut("products/status/{id}")]
+        [HttpPut("products/{id}")]
         public IActionResult ChangeProductStatus(int id)
         {
             _productService.ChangeProductStatus(id);
             return Ok($"Se cambió el estado del producto");
         }
 
-        [HttpPut("products/{id}")]
-        public IActionResult AddProduct(int id)
-        {
-            _productService.AddProduct(id);
-            return Ok($"Se ha dado de alta al producto con el ID : {id}");
-        }
-
-        [HttpDelete("products/{id}")]
-        public IActionResult DeleteProduct(int id)
-        {
-            _productService.DeleteProduct(id);
-            return Ok($"Se ha dado de baja al producto con el ID : {id}");
-        }
-
         [HttpPut("colours/{id}")]
-        public IActionResult AddColor(int id)
+        public IActionResult ChangeColourStatus(int id)
         {
-            _productService.AddColor(id);
-            return Ok($"Se ha dado de alta al color con el ID : {id}");
-        }
-
-        [HttpDelete("colours/{id}")]
-        public IActionResult DeleteColor(int id)
-        {
-            _productService.DeleteColor(id);
-            return Ok($"Se ha dado de baja al color con el ID : {id}");
+            _productService.ChangeColourStatus(id);
+            return Ok($"Se cambió el estado del color con ID {id}");
         }
 
         [HttpPut("sizes/{id}")]
-        public IActionResult AddSize(int id)
+        public IActionResult ChangeSizeStatus(int id)
         {
-            _productService.AddSize(id);
-            return Ok($"Se ha dado de alta al tamaño con el ID : {id}");
-        }
-
-        [HttpDelete("sizes/{id}")]
-        public IActionResult DeleteSize(int id)
-        {
-            _productService.DeleteSize(id);
-            return Ok($"Se ha dado de baja al tamaño con el ID : {id}");
+            _productService.ChangeSizeStatus(id);
+            return Ok($"Se cambió el estado del tamaño con ID {id}");
         }
 
         [HttpPut("categories/{id}")]
-        public IActionResult AddCategory(int id)
+        public IActionResult ChangeCategoryStatus(int id)
         {
-            _productService.AddCategory(id);
-            return Ok($"Se ha dado de alta a la categoría con el ID : {id}");
+            _productService.ChangeCategoryStatus(id);
+            return Ok($"Se cambió el estado de la categoría con ID {id}");
         }
-
-        [HttpDelete("categories/{id}")]
-        public IActionResult DeleteCategory(int id)
-        {
-            _productService.DeleteCategory(id);
-            return Ok($"Se ha dado de baja a la categoría con el ID : {id}");
-        }
-
     }
 }

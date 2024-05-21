@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using Back_End_TPI_PSS.Services.Interfaces;
 
 namespace Back_End_TPI_PSS.Data.Entities
 {
-    public class Product
+    public class Product : IStatusEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
