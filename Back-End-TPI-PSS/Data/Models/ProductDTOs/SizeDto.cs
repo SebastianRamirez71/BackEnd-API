@@ -2,6 +2,6 @@
 {
     public class SizeDto
     {
-        public string Description { get; set; }
+        public string SizeName { get; set; }
     }
 }

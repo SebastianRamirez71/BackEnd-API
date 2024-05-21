@@ -2,6 +2,6 @@
 {
     public class ColourDto
     {
-        public string Description { get; set; }
+        public string ColourName { get; set; }
     }
 }

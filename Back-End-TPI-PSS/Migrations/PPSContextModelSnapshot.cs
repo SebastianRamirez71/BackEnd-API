@@ -23,7 +23,7 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -41,7 +41,7 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("ColourName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -160,7 +160,7 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("SizeName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
