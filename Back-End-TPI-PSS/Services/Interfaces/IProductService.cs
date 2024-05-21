@@ -6,7 +6,7 @@ namespace Back_End_TPI_PSS.Services.Interfaces
     public interface IProductService
     {
         public bool AddProduct(ProductDto product);
-        public Task<IEnumerable<Product>> GetProducts(string? priceOrder, string? genre);
+        public Task<IEnumerable<Product>> GetProducts(string? priceOrder, string? size, string? genre, string? category, string? colour);
         public Task<IEnumerable<Product>> GetAllProducts();
         public bool AddSize(SizeDto sizeDto);
         public bool AddColour(ColourDto colourDto);
