@@ -16,14 +16,14 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? priceOrder, string? genre)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? priceOrder, string? size,string? colour,string? genre, string? category)
         {
-            return Ok(await _productService.GetProducts(priceOrder, genre));
+            return Ok(await _productService.GetProducts(priceOrder, size,genre, category, colour));
         }
         [HttpGet("allproducts")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
         {
-            return Ok( await _productService.GetAllProducts());
+            return Ok(await _productService.GetAllProducts());
         }
 
         [HttpPost("products")]

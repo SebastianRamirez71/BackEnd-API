@@ -20,7 +20,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(string? priceOrder,string? genre)
+        public async Task<IEnumerable<Product>> GetProducts(string? priceOrder,string? size, string? genre, string? category, string? colour)
         { 
             var productsQuery = _context.Products
                 .Include(p => p.Colours)
@@ -29,10 +29,22 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 .Where(x => x.Status == true)
                 .AsQueryable(); 
 
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                productsQuery = productsQuery.Where(x => x.Sizes.Any(s => s.Description == size));
+            }
+            if (!string.IsNullOrWhiteSpace(colour))
+            {
+                productsQuery = productsQuery.Where(x => x.Colours.Any(c => c.Description == colour));
+            }
             if (!string.IsNullOrWhiteSpace(genre))
             {
-                productsQuery = productsQuery.Where(p => p.Genre == genre);
-            }    
+                productsQuery = productsQuery.Where(x => x.Genre == genre);
+            }
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                productsQuery = productsQuery.Where(x => x.Categories.Any(c => c.Description == category));
+            }
 
             var products = await productsQuery.ToListAsync();
 
@@ -46,13 +58,13 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
             return products;
         }
-        public async Task <IEnumerable<Product>> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            return _context.Products
+            return await _context.Products
                 .Include(p => p.Colours)
                 .Include(p => p.Sizes)
                 .Include(p => p.Categories)
-                .ToList();
+                .ToListAsync();
         }
 
         public bool AddProduct(ProductDto productDto)
@@ -110,23 +122,23 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public bool CheckIfColourExists(string colour)
         {
-            return _context.Colours.Any(c => c.ColourName == colour);
+            return _context.Colours.Any(c => c.Description == colour);
         }
 
         public bool CheckIfSizeExists(string size)
         {
-            return _context.Sizes.Any(s => s.SizeName == size);
+            return _context.Sizes.Any(s => s.Description == size);
         }
 
         public bool AddColour(ColourDto colourDto)
         {
-            var existingColour = _context.Colours.FirstOrDefault(c => c.ColourName.ToLower() == colourDto.ColourName.ToLower());
+            var existingColour = _context.Colours.FirstOrDefault(c => c.Description.ToLower() == colourDto.Description.ToLower());
 
             if (existingColour == null)
             {
                 Colour colourToAdd = new Colour
                 {
-                    ColourName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(colourDto.ColourName.ToLower()),
+                    Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(colourDto.Description.ToLower()),
                     Status = true
                 };
                 _context.Colours.Add(colourToAdd);
@@ -146,13 +158,13 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public bool AddSize(SizeDto sizeDto)
         {
-            var existingSize = _context.Sizes.FirstOrDefault(c => c.SizeName.ToLower() == sizeDto.SizeName.ToLower());
+            var existingSize = _context.Sizes.FirstOrDefault(c => c.Description.ToLower() == sizeDto.Description.ToLower());
 
             if (existingSize == null)
             {
                 Size sizeToAdd = new Size
                 {
-                    SizeName = sizeDto.SizeName.ToUpper(),
+                    Description = sizeDto.Description.ToUpper(),
                     Status = true
                 };
                 _context.Sizes.Add(sizeToAdd);
@@ -176,13 +188,13 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public bool AddCategory(CategoryDto categoryDto)
         {
-            var existingCategory = _context.Categories.FirstOrDefault(c => c.CategoryName.ToLower() == categoryDto.CategoryName.ToLower());
+            var existingCategory = _context.Categories.FirstOrDefault(c => c.Description.ToLower() == categoryDto.Description.ToLower());
 
             if (existingCategory == null)
             {
                 Category categoryToAdd = new Category
                 {
-                    CategoryName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categoryDto.CategoryName.ToLower()),
+                    Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(categoryDto.Description.ToLower()),
                     Status = true
                 };
                 _context.Categories.Add(categoryToAdd);
@@ -200,6 +212,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
             return false;
         }
+
+
 
         public List<Colour> GetColours()
         {

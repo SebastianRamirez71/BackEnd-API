@@ -8,7 +8,7 @@ namespace Back_End_TPI_PSS.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string SizeName { get; set; }
+        public string Description { get; set; }
         public bool Status { get; set; }
 
     }
