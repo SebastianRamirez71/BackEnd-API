@@ -18,9 +18,9 @@ namespace Back_End_TPI_PSS.Services.Implementations
             _mapper = AutoMapperConfig.Configure();
         }
 
-        public bool CreateUser(UserDto userDto) 
+        public bool CreateUser(UserDto userDto)
         {
-            if (ValidateUser(userDto.Name))
+            if (ValidateEmail(userDto.Email))
             {
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
@@ -38,7 +38,18 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return false;
         }
 
-        public bool ValidateUser(string Name) 
+        public bool ValidateEmail(string email)
+        {
+            bool existingEmail = _context.Users.Any(u => u.Email == email);
+
+            if (!existingEmail)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool ValidateUser(string Name)
         {
             bool existingName = _context.Users.Any(u => u.Name == Name);
 
@@ -76,8 +87,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public bool DeleteUser(int id)
         {
-            var existingUser = _context.Users.FirstOrDefault(x => x.Id == id && x.Status == true); 
-            if (existingUser != null) 
+            var existingUser = _context.Users.FirstOrDefault(x => x.Id == id && x.Status == true);
+            if (existingUser != null)
             {
                 existingUser.Status = false;
                 _context.Users.Update(existingUser);

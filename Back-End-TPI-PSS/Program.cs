@@ -15,30 +15,31 @@ namespace Back_End_TPI_PSS
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
+            // Obtener configuración JWT
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
             var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
             var jwtAudience = builder.Configuration.GetSection("Jwt:Audience").Get<string>();
 
+            // Configuración de autenticación JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-             .AddJwtBearer(options =>
-             {
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidateLifetime = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = jwtIssuer,
-                     ValidAudience = jwtAudience,
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-                 };
-             });
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtIssuer,
+                        ValidAudience = jwtAudience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                    };
+                });
 
-
+            // Configuración de Swagger
             builder.Services.AddSwaggerGen(setupAction =>
             {
-                setupAction.AddSecurityDefinition("BackendPPS-API-BearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+                setupAction.AddSecurityDefinition("BackendPPS-API-BearerAuth", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
@@ -47,47 +48,50 @@ namespace Back_End_TPI_PSS
 
                 setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                {
-                    new OpenApiSecurityScheme
                     {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "BackendPPS-API-BearerAuth"
-                    } //Tiene que coincidir con el id seteado arriba en la definición
-                    }, new List<string>()
-                }
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "BackendPPS-API-BearerAuth"
+                            }
+                        },
+                        new List<string>()
+                    }
                 });
-            }); ;
+            });
 
-
+            // Configuración de controladores y JSON
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Explorador de Endpoints API
             builder.Services.AddEndpointsApiExplorer();
 
+            // Configuración de DbContext
+            builder.Services.AddDbContext<PPSContext>(dbContextOptions =>
+                dbContextOptions.UseSqlite(builder.Configuration["DB:ConnectionString"])
+            );
 
-
-            builder.Services.AddDbContext<PPSContext>(dbContextOptions => dbContextOptions.UseSqlite(
-            builder.Configuration["DB:ConnectionString"]));
-
-            #region Inyections
+            // Inyección de dependencias
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
-            #endregion
 
+            // Configuración de la aplicación
             var app = builder.Build();
+
             // Configuración de CORS
-            app.UseCors(builder =>
+            app.UseCors(corsBuilder =>
             {
-                builder.WithOrigins("http://localhost:3000") // Reemplaza con el origen de la web
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
+                corsBuilder.WithOrigins("http://localhost:3000")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
             });
 
-            // Configure the HTTP request pipeline.
+            // Configuración del pipeline HTTP
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -95,7 +99,6 @@ namespace Back_End_TPI_PSS
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
