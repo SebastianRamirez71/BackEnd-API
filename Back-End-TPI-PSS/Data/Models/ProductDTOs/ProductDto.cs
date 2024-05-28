@@ -11,10 +11,8 @@ namespace Back_End_TPI_PSS.Data.Models.ProductDTOs
         public decimal Price { get; set; }
         public string Image { get; set; }
         public string Genre { get; set; }
-        public string Category { get; set; }
-        public DateTime CreatedDate { get; set;} = DateTime.Now;
-        public List<int> ColourId { get; set; }
-        public List<int> SizeId { get; set; }
-        public List<int> CategoryId { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public List<int> Category { get; set; }
+        public List<StockDto> Stocks { get; set; }
     }
 }

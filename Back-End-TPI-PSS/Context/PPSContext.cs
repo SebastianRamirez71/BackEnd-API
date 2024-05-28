@@ -12,6 +12,9 @@ namespace Back_End_TPI_PSS.Context
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<StockSize> StockSizes { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public PPSContext(DbContextOptions<PPSContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -21,20 +24,30 @@ namespace Back_End_TPI_PSS.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Sizes)
-                .WithMany()
-                .UsingEntity(j => j.ToTable("SizesProducts"));
+                .HasMany(p => p.Stocks)
+                .WithOne()
+                .HasForeignKey(s => s.ProductId);
 
-            modelBuilder.Entity<Product>()
-                .HasMany(p => p.Colours)
-                .WithMany()
-                .UsingEntity(j => j.ToTable("ColoursProducts"));
+
+            modelBuilder.Entity<Stock>()
+                .HasMany(s => s.StockSizes)
+                .WithOne()
+                .HasForeignKey(ss => ss.StockId);
+
+            modelBuilder.Entity<Stock>()
+                .HasMany(s => s.Images)
+                .WithOne()
+                .HasForeignKey(i => i.StockId);
 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Categories)
                 .WithMany()
                 .UsingEntity(j => j.ToTable("CategoriesProducts"));
 
+            modelBuilder.Entity<StockSize>()
+                .HasOne(ss => ss.Size)
+                .WithMany()
+                .HasForeignKey(ss => ss.SizeId);
 
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Orders)

@@ -10,20 +10,38 @@ namespace Back_End_TPI_PSS.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+
         public ProductController(IProductService service)
         {
             _productService = service;
         }
 
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? priceOrder, string? size, string? colour, string? genre, string? category)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] string? priceOrder, string? size, string? colour, string? genre, string? category, string? dateOrder)
         {
-            return Ok(await _productService.GetProducts(priceOrder, size, genre, category, colour));
+            try
+            {
+                return Ok(await _productService.GetProducts(priceOrder, size, genre, category, colour, dateOrder));
+
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("allproducts")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return Ok( await _productService.GetAllProducts());
+            try
+            {
+                return Ok(await _productService.GetAllProducts());
+            }
+            catch (ArgumentException ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost("products")]
@@ -74,62 +92,81 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("products/edit/{id}")]
-        public IActionResult EditProductById(int id, ProductToEditDto productToEditDto)
+        public IActionResult EditProductById(int id, ProductToEditDto producttoeditdto)
         {
-            if (_productService.EditProductById(id, productToEditDto))
+            if (_productService.EditProductById(id, producttoeditdto))
             {
-                return Ok($"Se ha editado el producto con el ID: {id}");
+                return Ok($"se ha editado el producto con el id: {id}");
             }
-            return BadRequest($"No se ha podido editar el producto con el ID: {id}");
+            return BadRequest($"no se ha podido editar el producto con el id: {id}");
         }
 
+        #region GetVariants
         [HttpGet("colours")]
         public IActionResult GetColours()
         {
-            var coloursToReturn = _productService.GetColours();
-            return Ok(coloursToReturn);
+            return Ok(_productService.GetActiveEntities<Colour>());
         }
 
         [HttpGet("sizes")]
         public IActionResult GetSizes()
         {
-            var sizesToReturn = _productService.GetSizes();
-            return Ok(sizesToReturn);
+            return Ok(_productService.GetActiveEntities<Size>());
         }
 
         [HttpGet("categories")]
         public IActionResult GetCategories()
         {
-            var categoriesToReturn = _productService.GetCategories();
-            return Ok(categoriesToReturn);
+            return Ok(_productService.GetActiveEntities<Category>());
         }
 
+        [HttpGet("mappedColours")]
+        public IActionResult GetColoursMapped()
+        {
+            return Ok(_productService.GetMappedVariants<Colour, ReturnColourDto>());
+        }
+        [HttpGet("mappedSizes")]
+        public IActionResult GetSizesMapped()
+        {
+            return Ok(_productService.GetMappedVariants<Size, ReturnSizeDto>());
+        }
+        [HttpGet("mappedCategories")]
+        public IActionResult GetCategoriesMapped()
+        {
+            return Ok(_productService.GetMappedVariants<Category, ReturnCategoryDto>());
+        }
+
+        #endregion
+
+        #region PutVariants
         [HttpPut("products/{id}")]
         public IActionResult ChangeProductStatus(int id)
         {
-            _productService.ChangeProductStatus(id);
+            _productService.ChangeEntityStatus<Product>(id);
             return Ok($"Se cambió el estado del producto");
         }
 
         [HttpPut("colours/{id}")]
         public IActionResult ChangeColourStatus(int id)
         {
-            _productService.ChangeColourStatus(id);
+            _productService.ChangeEntityStatus<Colour>(id);
             return Ok($"Se cambió el estado del color con ID {id}");
         }
 
         [HttpPut("sizes/{id}")]
         public IActionResult ChangeSizeStatus(int id)
         {
-            _productService.ChangeSizeStatus(id);
+            _productService.ChangeEntityStatus<Size>(id);
             return Ok($"Se cambió el estado del tamaño con ID {id}");
         }
 
         [HttpPut("categories/{id}")]
         public IActionResult ChangeCategoryStatus(int id)
         {
-            _productService.ChangeCategoryStatus(id);
+            _productService.ChangeEntityStatus<Category>(id);
             return Ok($"Se cambió el estado de la categoría con ID {id}");
         }
+        #endregion
+
     }
 }

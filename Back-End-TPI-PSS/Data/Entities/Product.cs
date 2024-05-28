@@ -10,15 +10,13 @@ namespace Back_End_TPI_PSS.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Description { get; set; } 
+        public string Description { get; set; }
         public string Image { get; set; }
         public string Genre { get; set; }
-        public string Category { get; set; }
         public decimal Price { get; set; }
         public bool Status { get; set; }
         public DateTime CreatedDate { get; set; }
-        public ICollection<Colour> Colours { get; set; } = new List<Colour>();
-        public ICollection<Size> Sizes { get; set; } = new List<Size>();
+        public List<Stock> Stocks { get; set; } = new List<Stock>();
         public ICollection<Category> Categories { get; set; } = new List<Category>();
     }
 }
