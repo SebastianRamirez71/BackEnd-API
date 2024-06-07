@@ -29,6 +29,21 @@ namespace Back_End_TPI_PSS.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("products/{id}")]
+        public async Task<ActionResult<Product>> GetById(int id)
+        {
+            try
+            {
+                return Ok(await _productService.GetById(id));
+            }
+            catch (ArgumentException ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("allproducts")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {

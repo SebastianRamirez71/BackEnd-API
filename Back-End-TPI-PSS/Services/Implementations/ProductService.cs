@@ -92,6 +92,23 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         }
 
+        public async Task<Product> GetById(int id)
+        {
+
+            var product = await _context.Products
+                .Include(p => p.Stocks).ThenInclude(s => s.Images)
+                .Include(p => p.Stocks).ThenInclude(s => s.Colour)
+                .Include(p => p.Stocks).ThenInclude(s => s.StockSizes).ThenInclude(ss => ss.Size)
+                .Include(p => p.Categories)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product.Id == id)
+            {
+                return product;
+            }
+            return null;
+
+        }
+
         public bool EditProductById(int id, ProductToEditDto productToEditDto)
         {
             var productToEdit = _context.Products
