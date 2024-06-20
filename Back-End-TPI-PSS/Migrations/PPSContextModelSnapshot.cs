@@ -247,6 +247,9 @@ namespace Back_End_TPI_PSS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Notification")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -259,6 +262,10 @@ namespace Back_End_TPI_PSS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VerificationCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

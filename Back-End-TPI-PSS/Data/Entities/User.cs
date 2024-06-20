@@ -15,6 +15,8 @@ namespace Back_End_TPI_PSS.Data.Entities
         public string Password { get; set; }
         public string UserType { get; set; } = "Cliente";
         public bool Status { get; set; } = true;
+        public bool Notification { get; set; } = false;
+        public string VerificationCode { get; set; } = string.Empty;
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
     }

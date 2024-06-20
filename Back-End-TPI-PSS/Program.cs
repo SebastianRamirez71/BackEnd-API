@@ -79,6 +79,7 @@ namespace Back_End_TPI_PSS
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             // Configuración de la aplicación
             var app = builder.Build();
