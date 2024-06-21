@@ -6,8 +6,9 @@ namespace Back_End_TPI_PSS.Services.Interfaces
 {
     public interface IEmailService
     {
-        public void Notify(ProductDto productDto);
-        public void SendEmail(ProductDto product, User user);
+        string ErrorDescription { get; set; }
+        public void Notify(Product productDto);
+        public void SendEmail(Product product, User user);
         void Subscribe(string email);
         void UnSubscribe(string email);
     }

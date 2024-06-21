@@ -79,7 +79,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
             return false;
         }
-
         public List<UserReturnDto> GetUsers()
         {
             return _mapper.Map<List<UserReturnDto>>(_context.Users.ToList());

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "urFjpuS/6s+FOOa8Wq+8b3orkiVYCzDwbaGAblPPtVdigpeAzI+then96fLiT6ztRYDE5wiALHkz0yzRAfhdsQ==",
+  "dgSpecHash": "bRij7McB4vdSEJV30ripswinPZe1KoooROwVpCiFUNsAtqiUvSBz9/wTqVewhkQiJ7EKKEw/2dpW1brcHQKtEw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+  "projectFilePath": "C:\\Users\\sebar\\OneDrive\\Escritorio\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sebar\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\sebar\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",

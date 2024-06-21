@@ -18,6 +18,20 @@ namespace Back_End_TPI_PSS.Controllers
             _userService = userService;
         }
 
+        [HttpGet("user")]
+        public IActionResult GetUser(string email)
+        {
+            try
+            {
+                return Ok(_userService.GetUserByEmail(email));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("users")]
         public IActionResult CreateUser([FromBody] UserDto userDto)
         {

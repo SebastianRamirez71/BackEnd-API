@@ -30,12 +30,12 @@ namespace Back_End_TPI_PSS.Controllers
             }
         }
 
-        [HttpGet("products/{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        [HttpGet("products/{description}")]
+        public async Task<ActionResult<Product>> GetByDescription(string description)
         {
             try
             {
-                return Ok(await _productService.GetById(id));
+                return Ok(await _productService.GetByDescription(description));
             }
             catch (ArgumentException ex)
             {

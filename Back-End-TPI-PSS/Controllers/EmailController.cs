@@ -14,25 +14,37 @@ namespace Back_End_TPI_PSS.Controllers
         {
             _emailService = emailService;
         }
-        [HttpPost("SendEmail")]
-        public IActionResult SendEmail()
-        {
-            //_emailService.Notify(); // va en productService - cuando se agregue un producto con precio "bajo"
-            return Ok();
-        }
 
-        [HttpPost("Subscribe")]
+        [HttpPut("subscribe")]
         public IActionResult Subscribe([FromBody]string email)
         {
-            _emailService.Subscribe(email);
-            return Ok();
+            try
+            {
+                _emailService.Subscribe(email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(_emailService.ErrorDescription);
+            }
+                
         }
 
-        [HttpDelete("UnSubscribe")]
-        public IActionResult UnSubscribe([FromBody]string email)
+        [HttpPut("unsubscribe")]
+        public IActionResult UnSubscribe([FromBody] string email)
         {
-            _emailService.UnSubscribe(email);
-            return Ok();
+            try
+            {
+                _emailService.UnSubscribe(email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(_emailService.ErrorDescription);
+            }
+
         }
     }
 }

@@ -59,7 +59,8 @@ namespace Back_End_TPI_PSS.Controllers
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim("name", user.Name),
             new Claim("surname", user.SurName),
-            new Claim("role", user.UserType)
+            new Claim("role", user.UserType),
+            new Claim(type:"subscribe", value:user.Notification.ToString().ToLower(),valueType:ClaimValueTypes.Boolean)
         };
 
             var token = new JwtSecurityToken(

@@ -18,12 +18,14 @@ namespace Back_End_TPI_PSS.Services.Implementations
     public class ProductService : IProductService
     {
         private readonly PPSContext _context;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
-        public ProductService(PPSContext context)
+        public ProductService(PPSContext context, IEmailService emailService)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
+            _emailService = emailService;
         }
 
         public async Task<IEnumerable<Product>> GetProducts(string? priceOrder, string? size, string? genre, string? category, string? colour, string? dateOrder)
@@ -92,7 +94,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         }
 
-        public async Task<Product> GetById(int id)
+        public async Task<Product> GetByDescription(string description)
         {
 
             var product = await _context.Products
@@ -100,12 +102,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 .Include(p => p.Stocks).ThenInclude(s => s.Colour)
                 .Include(p => p.Stocks).ThenInclude(s => s.StockSizes).ThenInclude(ss => ss.Size)
                 .Include(p => p.Categories)
-                .FirstOrDefaultAsync(p => p.Id == id);
-            if (product.Id == id)
-            {
-                return product;
-            }
-            return null;
+                .FirstOrDefaultAsync(p => p.Description.Equals(description));
+            return product;
 
         }
 
@@ -183,6 +181,11 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     CreatedDate = DateTime.Now,
                     Status = true
                 };
+
+                if(newProduct.Price < 20000)
+                {
+                    _emailService.Notify(newProduct);
+                }
 
                 foreach (var categoryId in productDto.Category)
                 {
