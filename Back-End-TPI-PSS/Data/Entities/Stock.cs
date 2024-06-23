@@ -17,9 +17,8 @@ namespace Back_End_TPI_PSS.Data.Entities
 
         [JsonIgnore]
         public Colour Colour { get; set; }   
-
         public List<StockSize> StockSizes { get; set; } = new List<StockSize>();
-        public List<Image> Images { get; set; } = new List<Image>();  
-
-     }
+        public List<Image> Images { get; set; } = new List<Image>();
+        public bool Status { get; set; }
+    }
 }

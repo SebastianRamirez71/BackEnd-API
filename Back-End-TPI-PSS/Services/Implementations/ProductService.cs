@@ -140,7 +140,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 {
                     Stock newStock = new Stock
                     {
-                        ColourId = stockDto.ColourId
+                        ColourId = stockDto.ColourId,
+                        Status = stockDto.Status,
                     };
 
                     foreach (var sizeDto in stockDto.StockSizes)
@@ -236,6 +237,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                         newStock.Images.Add(new Image { ImageURL = imageDto.Image });
                     }
 
+                    newStock.Status = stockDto.Status;
                     newProduct.Stocks.Add(newStock);
                 }
 
