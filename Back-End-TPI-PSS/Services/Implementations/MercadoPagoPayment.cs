@@ -20,6 +20,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 Items = items.Select(item => new PreferenceItemRequest
                 {
                     Title = item.Name,
+                    Description = $"Color: {item.Color}, Size: {item.SizeId}",
+                    PictureUrl = item.Image,
                     Quantity = item.Quantity,
                     CurrencyId = "ARS",
                     UnitPrice = item.Price
@@ -32,11 +34,26 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     Pending = "http://localhost:3000",
                 },
                 AutoReturn = "approved",
+                NotificationUrl = "https://tu-domino.com/api/mercadopago/webhook", // URL de tu endpoint de MercadoPago
+
+                // Agregar metadata
+                Metadata = new Dictionary<string, object>
+                {
+                    { "preference_id", Guid.NewGuid().ToString() } // Generar un ID único para preference_id
+                }
             };
 
             var client = new PreferenceClient();
             Preference preference = await client.CreateAsync(request);
+
+            // Actualizar el preference_id con el ID de la preferencia creada
+            request.Metadata["preference_id"] = preference.Id.ToString();
+
+            // Actualizar la preferencia con el nuevo metadata
+            await client.UpdateAsync(preference.Id, request);
+
             return preference;
+
         }
     }
 }

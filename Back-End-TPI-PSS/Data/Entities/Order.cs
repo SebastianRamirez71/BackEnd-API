@@ -5,17 +5,20 @@ namespace Back_End_TPI_PSS.Data.Entities
 {
     public class Order
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public bool Status { get; set; } = true;
-        public decimal TotalPrice { get; set; }
+        public string PreferenceId { get; set; }
+        public OrderStatus Status { get; set; } // Enumeración para los estados de la orden
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-        public string Address { get; set; }
+        public ICollection<OrderLine> OrderLines { get; set; }
+    }
 
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-        public int UserId { get; set; }
-        public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+    public enum OrderStatus
+    {
+        Pending,
+        Approved,
+        Rejected
+        // Agrega más estados según tus necesidades
     }
 }
