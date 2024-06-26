@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucho\\OneDrive\\Escritorio\\Back PPS\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {}
+    "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucho\\OneDrive\\Escritorio\\Back PPS\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {
+    "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucho\\OneDrive\\Escritorio\\Back PPS\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+        "projectUniqueName": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
         "projectName": "Back-End-TPI-PPS",
-        "projectPath": "C:\\Users\\lucho\\OneDrive\\Escritorio\\Back PPS\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+        "projectPath": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
         "packagesPath": "C:\\Users\\lucho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucho\\OneDrive\\Escritorio\\Back PPS\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
+        "outputPath": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\lucho\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -100,6 +95,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[7.1.2, )"
+            },
+            "mercadopago-sdk": {
+              "target": "Package",
+              "version": "[2.3.8, )"
             }
           },
           "imports": [
@@ -121,7 +120,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
