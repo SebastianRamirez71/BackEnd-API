@@ -5,32 +5,36 @@ namespace Back_End_TPI_PSS.Models
 {
     public class CartItem
     {
-        [Key]
-        public int Id { get; set; }
+        [Required]
+        public int id { get; set; }
+        [Required]
+        public int ProductId { get; set; }
 
         [Required]
-        [MaxLength(100)]
         public string Name { get; set; }
 
         [Required]
         public int Quantity { get; set; }
 
         [Required]
-        [MaxLength(50)]
+
         public string Color { get; set; }
 
         [Required]
-        public int ColorId { get; set; }
+ 
+        public string SizeName { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        public int ColorId { get; set; }            
+
+        [Required]
+
         public string Image { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public string SizeId { get; set; }
     }
 }

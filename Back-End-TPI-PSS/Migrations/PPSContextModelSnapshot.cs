@@ -79,14 +79,17 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PreferenceId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
@@ -108,11 +111,14 @@ namespace Back_End_TPI_PSS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ColourId")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")
@@ -121,19 +127,16 @@ namespace Back_End_TPI_PSS.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SizeId")
-                        .IsRequired()
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ColourId");
-
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("OrderId1");
 
-                    b.HasIndex("SizeId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderLines");
                 });
@@ -314,15 +317,15 @@ namespace Back_End_TPI_PSS.Migrations
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.OrderLine", b =>
                 {
-                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Colour", "Colour")
-                        .WithMany()
-                        .HasForeignKey("ColourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Back_End_TPI_PSS.Data.Entities.Order", null)
                         .WithMany("OrderLines")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -332,17 +335,9 @@ namespace Back_End_TPI_PSS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Back_End_TPI_PSS.Data.Entities.Size", "Size")
-                        .WithMany()
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Colour");
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Stock", b =>

@@ -1,13 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Back_End_TPI_PSS.Data.Entities;
+using System.Text.Json.Serialization;
 
 namespace Back_End_TPI_PSS.Data.Models.OrderDTOs
 {
     public class OrderDto
     {
-        [JsonIgnore]
-        public int Id { get; set; }
-        public bool Status { get; set; } = true;
-        [JsonIgnore]
-        public int UserId { get; set; }
+        public string PreferenceId { get; set; }
+        public OrderStatus Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public ICollection<OrderLine> OrderLines { get; set; }
     }
+
 }
