@@ -9,7 +9,8 @@ namespace Back_End_TPI_PSS.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Colour> Colours { get; set; }
+        public DbSet<Colour> Color { get; set; } // Aquí debería estar definido correctamente
+
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<StockSize> StockSizes { get; set; }
@@ -69,11 +70,9 @@ namespace Back_End_TPI_PSS.Context
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
-            modelBuilder.Entity<Order>()
-               .HasOne(o => o.Product)
-               .WithMany()
-               .HasForeignKey(o => o.ProductId);
+
 
         }
     }
 }
+

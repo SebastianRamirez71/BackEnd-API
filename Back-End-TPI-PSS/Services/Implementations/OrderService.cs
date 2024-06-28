@@ -22,47 +22,74 @@ namespace Back_End_TPI_PSS.Services.Implementations
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<List<Order>> GetApprovedOrdersForUser(int userId)
+        {
+            return await _context.Orders
+                .Where(o => o.UserId == userId && o.Status == "Approved")
+                .ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            return await _context.Orders.ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllApprovedOrders()
+        {
+            return await _context.Orders
+                .Where(o => o.Status == "Approved")
+                .ToListAsync();
+        }
+
         public async Task<bool> AddOrder(Order order)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            // Verificar existencia del usuario
+            var userExists = await _context.Users.AnyAsync(u => u.Id == order.UserId);
+            if (!userExists)
             {
-                try
+                throw new Exception($"User with ID {order.UserId} not found.");
+            }
+
+            // Verificar existencia de los productos, colores y tamaños en las OrderLines
+            foreach (var orderLine in order.OrderLines)
+            {
+                var productExists = await _context.Products.AnyAsync(p => p.Id == orderLine.ProductId);
+                if (!productExists)
                 {
-                    int userId = GetUserIdFromToken(); // Obtener el userId desde el token JWT
-
-                    var orderToAdd = new Order
-                    {
-                        CreatedAt = DateTime.Now,
-                        PreferenceId = order.PreferenceId,
-                        ProductQuantity = order.ProductQuantity,
-                        Status = OrderStatus.Pending,
-                        UpdatedAt = DateTime.Now,
-                        ProductId = order.ProductId,
-                        UserId = userId // Asignar el userId obtenido
-                    };
-
-                    _context.Orders.Add(orderToAdd);
-
-                    await _context.SaveChangesAsync();
-
-                    await transaction.CommitAsync();
-                    return true;
+                    throw new Exception($"Product with ID {orderLine.ProductId} not found.");
                 }
-                catch (Exception ex)
+
+                var colorExists = await _context.Color.AnyAsync(c => c.Id == orderLine.ColorId);
+                if (!colorExists)
                 {
-                    Console.WriteLine($"Error adding order: {ex.Message}");
-                    await transaction.RollbackAsync();
-                    throw new Exception("Error adding order", ex);
+                    throw new Exception($"Color with ID {orderLine.ColorId} not found.");
+                }
+
+                var sizeExists = await _context.Sizes.AnyAsync(s => s.Id == orderLine.SizeId);
+                if (!sizeExists)
+                {
+                    throw new Exception($"Size with ID {orderLine.SizeId} not found.");
                 }
             }
+
+            order.CreatedAt = DateTime.UtcNow;
+            order.UpdatedAt = DateTime.UtcNow;
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
+
+
+
+
 
         public async Task<bool> UpdateOrderStatus(Order order)
         {
             var existingOrder = _context.Orders.FirstOrDefault(o => o.Id == order.Id);
             if (existingOrder != null)
             {
-                existingOrder.Status = OrderStatus.Approved;
+                existingOrder.Status = "Approved";
                 _context.Orders.Update(existingOrder);
                 await _context.SaveChangesAsync();
                 return true;
@@ -72,29 +99,45 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public async Task<bool> AddOrderLine(Order order)
         {
-            var existingOrder = _context.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var existingOrder = await _context.Orders
+                .Include(o => o.OrderLines)  // Incluir las líneas de orden relacionadas
+                .FirstOrDefaultAsync(o => o.Id == order.Id);
 
-            Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == order.ProductId);
-            if (product == null)
+            if (existingOrder == null)
             {
-                throw new Exception($"Product with ID {order.ProductId} not found.");
+                throw new Exception($"Order with ID {order.Id} not found.");
             }
 
-            var orderLine = new OrderLine
+            // Recorrer cada OrderLine proporcionada en order.OrderLines
+            foreach (var item in order.OrderLines)
             {
-                OrderId = existingOrder.Id,
-                ProductId = product.Id,
-                PreferenceId = existingOrder.PreferenceId,
-                Description = product.Description,
-                Quantity = existingOrder.ProductQuantity,
-                UnitPrice = product.Price
-            };
+                Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == item.ProductId);
+                if (product == null)
+                {
+                    throw new Exception($"Product with ID {item.ProductId} not found.");
+                }
 
-            _context.OrderLines.Add(orderLine);
+                // Construir la OrderLine usando los datos de item
+                var orderLine = new OrderLine
+                {
+                    OrderId = existingOrder.Id,
+                    ProductId = product.Id,
+                    PreferenceId = existingOrder.PreferenceId,
+                    Description = product.Description,
+                    Quantity = item.Quantity,
+                    UnitPrice = product.Price,
+                    ColorId = item.ColorId,      // Asignar el color desde item
+                    SizeId = item.SizeId,        // Asignar el tamaño desde item
+                };
+
+                existingOrder.OrderLines.Add(orderLine);  // Agregar la OrderLine a la orden existente
+            }
+
             await _context.SaveChangesAsync();
 
             return true;
         }
+
 
         // Método para obtener el userId desde el token JWT
         private int GetUserIdFromToken()

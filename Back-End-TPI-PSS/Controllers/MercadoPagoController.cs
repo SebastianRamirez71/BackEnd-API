@@ -41,7 +41,35 @@ namespace Back_End_TPI_PSS.Controllers
         {
             try
             {
+                var userId = GetUserIdFromToken();  // Obtener el userId desde el token JWT
+
                 var preference = await _mercadoPagoPayment.CreatePreferenceRequest(items);
+
+                var item = items.First(); // Tomar el primer elemento para simplificar
+
+                // Crear el objeto Order con el UserId correctamente asignado
+                var order = new Order
+                {
+                    PreferenceId = preference.Id.ToString(),
+                    ProductQuantity = item.Quantity, // Cantidad total de productos en el pedido
+                    OrderLines = new List<OrderLine>
+            {
+                new OrderLine
+                {
+                    Description = item.Name,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.Price,
+                    ColorId = item.ColorId,
+                    SizeId = item.SizeId
+                }
+            },
+                    UserId = userId  // Asignar el userId recuperado desde el token
+                };
+
+                await _orderService.AddOrder(order);
+
+                Console.WriteLine("Order created successfully");
                 return Ok(new { preferenceId = preference.Id });
             }
             catch (Exception ex)
@@ -54,6 +82,7 @@ namespace Back_End_TPI_PSS.Controllers
                 return BadRequest($"Error creating payment preference: {ex.Message}");
             }
         }
+
 
         [HttpPut("paymentStatus")]
         public async Task<IActionResult> UpdatePaymentStatus([FromQuery] string preferenceId, string status)

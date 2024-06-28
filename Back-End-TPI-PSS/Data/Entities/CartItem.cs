@@ -21,11 +21,11 @@ namespace Back_End_TPI_PSS.Models
         public string Color { get; set; }
 
         [Required]
- 
+
         public string SizeName { get; set; }
 
         [Required]
-        public int ColorId { get; set; }            
+        public int ColorId { get; set; }
 
         [Required]
 
@@ -35,7 +35,7 @@ namespace Back_End_TPI_PSS.Models
         public decimal Price { get; set; }
 
         [Required]
-        public string SizeId { get; set; }
+        public int SizeId { get; set; }
     }
 }
 

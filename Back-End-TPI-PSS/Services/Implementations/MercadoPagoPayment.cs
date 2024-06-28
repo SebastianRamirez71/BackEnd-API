@@ -25,18 +25,21 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public async Task<Preference> CreatePreferenceRequest(List<CartItem> items)
         {
+            var item = items.First(); // Solo toma el primer elemento para simplificar
             var request = new PreferenceRequest
             {
-                Items = items.Select(item => new PreferenceItemRequest
-                {
-                    Title = item.Name,
-                    Description = $"Color: {item.Color}, Size: {item.SizeName}",
-                    PictureUrl = item.Image,
-                    Quantity = item.Quantity,
-                    CurrencyId = "ARS",
-                    UnitPrice = item.Price
-                }).ToList(),
-
+                Items = new List<PreferenceItemRequest>
+        {
+            new PreferenceItemRequest
+            {
+                Title = item.Name,
+                Description = $"Color: {item.Color}, Size: {item.SizeName}",
+                PictureUrl = item.Image,
+                Quantity = item.Quantity,
+                CurrencyId = "ARS",
+                UnitPrice = item.Price
+            }
+        },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
                     Success = "http://localhost:3000",
@@ -47,39 +50,42 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 NotificationUrl = "https://tu-domino.com/api/mercadopago/webhook",
 
                 Metadata = new Dictionary<string, object>
-                {
-                    { "preference_id", Guid.NewGuid().ToString() }
-                }
+        {
+            { "preference_id", Guid.NewGuid().ToString() }
+        }
             };
 
             var client = new PreferenceClient();
             try
             {
+                Console.WriteLine("Creating MercadoPago preference request...");
                 Preference preference = await client.CreateAsync(request);
+                Console.WriteLine($"Preference created with ID: {preference.Id}");
 
                 request.Metadata["preference_id"] = preference.Id.ToString();
                 await client.UpdateAsync(preference.Id, request);
-                Console.WriteLine("inicio de la orden");
-                
+
+                Console.WriteLine("Creating order...");
                 var order = new Order
                 {
-                    ProductId = items.First().ProductId,
                     PreferenceId = preference.Id.ToString(),
-                    ProductQuantity = items.First().Quantity,
-                    OrderLines = items.Select(item => new OrderLine
-                    {
-                        Description = item.Name,
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity,
-                        UnitPrice = item.Price
-                    }).ToList(),
+                    ProductQuantity = item.Quantity, // Total quantity of products in the order
+                    OrderLines = new List<OrderLine>
+            {
+                new OrderLine
+                {
+                    Description = item.Name,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.Price,
+                    ColorId = item.ColorId,
+                    SizeId = item.SizeId
+                }
+            }
                 };
-                var paymentClient = new PaymentClient();
-                
-                Console.WriteLine("medio de la orden");
-                var orderEstado = preference.BackUrls.Success;
-                
+
                 await _orderService.AddOrder(order);
+                Console.WriteLine("Order created successfully");
                 return preference;
             }
             catch (Exception ex)
@@ -88,5 +94,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 throw new Exception("Error creating MercadoPago preference", ex);
             }
         }
+
     }
 }

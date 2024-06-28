@@ -3,98 +3,105 @@ using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Route("api/")]
+    [Route("api/orders")]
     [ApiController]
     [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService service)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor)
         {
-            _orderService = service;
+            _orderService = orderService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        //[HttpPost("orders")]
-        //public IActionResult AddOrder([FromBody] OrderDto orderDto)
-        //{
-        //    string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+        // Endpoint para ver las órdenes del usuario autenticado en estado aprobado
+        [HttpGet("user/approved")]
+        public async Task<IActionResult> GetUserApprovedOrders()
+        {
+            try
+            {
+                // Obtener el userId del token
+                var userId = GetUserIdFromToken();
 
-        //    if (role == "Cliente" || role == "Admin")
-        //    {
-        //        if (orderDto == null)
-        //        {
-        //            return BadRequest("La solicitud no es válida.");
-        //        }
-        //        if (!int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
-        //        //Checkeamos que el userId sea distinto de un int para parsearlo y llevarlo al service despues
-        //        //En caso de que falle para eso esta el !int.TryParse del if que devuelve el 400 generico
-        //        {
-        //            return BadRequest("No se pudo obtener o convertir el UserId a un valor entero.");
-        //        }
+                var orders = await _orderService.GetApprovedOrdersForUser(userId);
 
-        //        orderDto.UserId = userId;
-        //        var orderToBeAdded = _orderService.AddOrder(orderDto);
-        //        return Ok($"Orden agregada correctamente. ID: {orderToBeAdded.Id}");
-        //    }
-        //    return Forbid();
-        //}
+                if (orders == null || !orders.Any())
+                {
+                    return NotFound("No se encontraron órdenes aprobadas para este usuario.");
+                }
 
-        //[HttpPost("orderlines")]
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener órdenes aprobadas: {ex.Message}");
+            }
+        }
 
-        //public IActionResult AddProductToProductLine(OrderLineDto orderLineDto)
-        //{
-        //    string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-        //    if (role == "Cliente" || role == "Admin")
-        //    {
-        //        if (orderLineDto == null)
-        //        {
-        //            return BadRequest("La solicitud no es válida.");
-        //        }
+        // Endpoint para ver todas las órdenes (requiere rol de administrador)
+        [HttpGet("admin/all")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            try
+            {
+                var orders = await _orderService.GetAllOrders();
 
-        //        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (orders == null || !orders.Any())
+                {
+                    return NotFound("No se encontraron órdenes.");
+                }
 
-        //        if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
-        //        {
-        //            return BadRequest("No se pudo obtener o convertir el UserId a un valor entero.");
-        //        }
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener todas las órdenes: {ex.Message}");
+            }
+        }
 
-        //        orderLineDto.UserId = userId;
+        // Endpoint para ver todas las órdenes aprobadas (requiere rol de administrador)
+        [HttpGet("admin/approved")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetAllApprovedOrders()
+        {
+            try
+            {
+                var orders = await _orderService.GetAllApprovedOrders();
 
-        //        var addedOrderLine = _orderService.AddProductToOrderLine(orderLineDto);
+                if (orders == null || !orders.Any())
+                {
+                    return NotFound("No se encontraron órdenes aprobadas.");
+                }
 
-        //        if (addedOrderLine == null)
-        //        {
-        //            return NotFound("El producto no se encontró o no se pudo encontrar la Orden de productos.");
-        //        }
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener todas las órdenes aprobadas: {ex.Message}");
+            }
+        }
 
-        //        return Ok(addedOrderLine);
-        //    }
-
-        //    return Forbid();
-        //}
-
-        //[HttpGet("orders")]
-        //public IActionResult GetAllOrders()
-        //{
-        //    string role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-
-        //    if (role == "Cliente" || role == "Admin")
-        //    {
-        //        var userId= User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        //        if (userId == null || !int.TryParse(userId, out int parsedUserId))
-        //        {
-        //            return BadRequest("No se pudo obtener o convertir el UserId a un valor entero.");
-        //        }
-
-        //        return Ok(_orderService.GetAllOrders(parsedUserId));
-        //    }
-        //    return Forbid();
-
-        //}
+        // Método privado para obtener el userId desde el token JWT
+        private int GetUserIdFromToken()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            throw new ApplicationException("No se pudo obtener el UserId desde el token JWT.");
+        }
     }
 }
