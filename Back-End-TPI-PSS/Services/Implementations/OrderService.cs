@@ -2,6 +2,7 @@
 using Back_End_TPI_PSS.Data;
 using Back_End_TPI_PSS.Data.Entities;
 using Back_End_TPI_PSS.Data.Models.OrderDTOs;
+using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +32,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                         PreferenceId = order.PreferenceId,
                         Status = OrderStatus.Pending,
                         UpdatedAt = DateTime.Now, 
-                        UserId =1
+                        UserId = 1
                     };
 
                     _context.Orders.Add(orderToAdd);
@@ -47,6 +48,20 @@ namespace Back_End_TPI_PSS.Services.Implementations
                     throw new Exception("Error adding order", ex);
                 }
             }
+        }
+
+        public async Task<bool> UpdateOrderStatus(Order order)
+        {
+            var existingOrder = _context.Orders.FirstOrDefault(o => o.Id == order.Id);
+
+            if (existingOrder != null)
+            { 
+                existingOrder.Status = OrderStatus.Approved;
+                _context.Orders.Update(existingOrder);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

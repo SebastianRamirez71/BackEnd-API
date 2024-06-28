@@ -2,6 +2,7 @@
 using Back_End_TPI_PSS.Data.Models.OrderDTOs;
 using Back_End_TPI_PSS.Models;
 using Back_End_TPI_PSS.Services.Interfaces;
+using MercadoPago.Client.Payment;
 using MercadoPago.Client.Preference;
 using MercadoPago.Config;
 using MercadoPago.Resource.Preference;
@@ -59,7 +60,7 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 request.Metadata["preference_id"] = preference.Id.ToString();
                 await client.UpdateAsync(preference.Id, request);
                 Console.WriteLine("inicio de la orden");
-
+                
                 var order = new Order
                 {
                     PreferenceId = preference.Id.ToString(),
@@ -70,12 +71,20 @@ namespace Back_End_TPI_PSS.Services.Implementations
                         UnitPrice = item.Price
                     }).ToList()
                 };
-
+                var paymentClient = new PaymentClient();
+                
                 Console.WriteLine("medio de la orden");
-                await _orderService.AddOrder(order);
-                Console.WriteLine("final de la orden");
+                var orderEstado = preference.BackUrls.Success;
 
-                return preference;
+                //if(preference.BackUrls.Success == "approved")
+                //{
+                    await _orderService.AddOrder(order);
+                    return preference;
+                //}
+                Console.WriteLine("final de la orden");
+                //return null;
+
+                
 
             }
             catch (Exception ex)
