@@ -69,10 +69,10 @@ namespace Back_End_TPI_PSS.Context
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
 
-            //modelBuilder.Entity<Order>()
-            //   .HasOne(o => o.Product)
-            //   .WithMany()
-            //   .HasForeignKey(o => o.ProductId);
+            modelBuilder.Entity<Order>()
+               .HasOne(o => o.Product)
+               .WithMany()
+               .HasForeignKey(o => o.ProductId);
 
         }
     }

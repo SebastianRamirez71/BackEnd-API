@@ -18,10 +18,10 @@ namespace Back_End_TPI_PSS.Data.Entities
         public int UserId { get; set; }
         public User User { get; set; }
 
-        // Relación con Product
-        //[ForeignKey("ProductId")]
-        //public int ProductId { get; set; }
-        //public Product Product { get; set; }
+        [ForeignKey("ProductId")]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
+        public int ProductQuantity { get; set; }
 
         public ICollection<OrderLine> OrderLines { get; set; }
     }

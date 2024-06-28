@@ -63,5 +63,19 @@ namespace Back_End_TPI_PSS.Controllers
             return NotFound();  
         
         }
+
+        [HttpPost("postOrderLine")]
+        public async Task<IActionResult> AddOrderLine([FromQuery] string preferenceId, string status)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.PreferenceId == preferenceId);
+
+            if (status == "approved")
+            {
+                await _orderService.AddOrderLine(order);
+                order.UpdatedAt = DateTime.Now;
+                return Ok();
+            }
+            return NotFound();
+        }
     }
 }
