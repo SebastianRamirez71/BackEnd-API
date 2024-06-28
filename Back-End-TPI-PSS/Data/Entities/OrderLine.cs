@@ -14,7 +14,7 @@ namespace Back_End_TPI_PSS.Data.Entities
         [ForeignKey("OrderId")]
         public Order Order { get; set; }  // Relación con Order
 
-        public string PreferenceId { get; set; }
+//        public string PreferenceId { get; set; }
 
         public string Description { get; set; }
 

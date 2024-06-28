@@ -11,6 +11,7 @@ using Back_End_TPI_PSS.Context;
 using Back_End_TPI_PSS.Data.Entities;
 using Back_End_TPI_PSS.Models;
 using Back_End_TPI_PSS.Services.Interfaces;
+using MercadoPago.Resource.User;
 
 namespace Back_End_TPI_PSS.Controllers
 {
@@ -41,35 +42,12 @@ namespace Back_End_TPI_PSS.Controllers
         {
             try
             {
-                var userId = GetUserIdFromToken();  // Obtener el userId desde el token JWT
+                var userId = GetUserIdFromToken();
 
-                var preference = await _mercadoPagoPayment.CreatePreferenceRequest(items);
+                // Crear la preferencia en MercadoPago
+                var preference = await _mercadoPagoPayment.CreatePreferenceRequest(items, userId);
 
-                var item = items.First(); // Tomar el primer elemento para simplificar
-
-                // Crear el objeto Order con el UserId correctamente asignado
-                var order = new Order
-                {
-                    PreferenceId = preference.Id.ToString(),
-                    ProductQuantity = item.Quantity, // Cantidad total de productos en el pedido
-                    OrderLines = new List<OrderLine>
-            {
-                new OrderLine
-                {
-                    Description = item.Name,
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.Price,
-                    ColorId = item.ColorId,
-                    SizeId = item.SizeId
-                }
-            },
-                    UserId = userId  // Asignar el userId recuperado desde el token
-                };
-
-                await _orderService.AddOrder(order);
-
-                Console.WriteLine("Order created successfully");
+                // Retornar la respuesta con el ID de la preferencia creada
                 return Ok(new { preferenceId = preference.Id });
             }
             catch (Exception ex)
@@ -97,22 +75,6 @@ namespace Back_End_TPI_PSS.Controllers
             }
             return NotFound();
         }
-
-        [HttpPost("postOrderLine")]
-        public async Task<IActionResult> AddOrderLine([FromQuery] string preferenceId, string status)
-        {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.PreferenceId == preferenceId);
-
-            if (status == "approved")
-            {
-                await _orderService.AddOrderLine(order);
-                order.UpdatedAt = DateTime.Now;
-                return Ok();
-            }
-            return NotFound();
-        }
-
-        // Método para obtener el userId desde el token JWT
         private int GetUserIdFromToken()
         {
             var httpContext = _httpContextAccessor.HttpContext;
@@ -121,14 +83,21 @@ namespace Back_End_TPI_PSS.Controllers
             if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
             {
                 var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+                //Console.WriteLine($"Token: {token}"); // Para depuración
 
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.ReadJwtToken(token);
 
-                if (jwtToken != null && jwtToken.Claims.FirstOrDefault(c => c.Type == "sub") != null)
+                if (jwtToken != null)
                 {
-                    var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "sub").Value);
-                    return userId;
+                    var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+                   // Console.WriteLine($"UserId Claim: {userIdClaim}"); // Para depuración
+
+                    if (int.TryParse(userIdClaim, out var userId))
+                    {
+                     //   Console.WriteLine($"Parsed UserId: {userId}"); // Para depuración
+                        return userId;
+                    }
                 }
             }
 

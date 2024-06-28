@@ -6,6 +6,6 @@ namespace Back_End_TPI_PSS.Services.Interfaces
 {
     public interface IMercadoPagoPayment
     {
-        public Task<Preference> CreatePreferenceRequest(List<CartItem> items);
+        public Task<Preference> CreatePreferenceRequest(List<CartItem> items, int userId);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Back_End_TPI_PSS.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back_End_TPI_PSS.Migrations
 {
     [DbContext(typeof(PPSContext))]
-    partial class PPSContextModelSnapshot : ModelSnapshot
+    [Migration("20240628190115_Intento3")]
+    partial class Intento3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
@@ -50,7 +53,7 @@ namespace Back_End_TPI_PSS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colours");
+                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("Back_End_TPI_PSS.Data.Entities.Image", b =>
@@ -99,6 +102,9 @@ namespace Back_End_TPI_PSS.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserId2")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -121,6 +127,10 @@ namespace Back_End_TPI_PSS.Migrations
 
                     b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PreferenceId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");

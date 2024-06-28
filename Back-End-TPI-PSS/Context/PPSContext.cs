@@ -9,8 +9,7 @@ namespace Back_End_TPI_PSS.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Colour> Color { get; set; } // Aquí debería estar definido correctamente
-
+        public DbSet<Colour> Colours { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<StockSize> StockSizes { get; set; }
@@ -28,7 +27,6 @@ namespace Back_End_TPI_PSS.Context
                 .HasMany(p => p.Stocks)
                 .WithOne()
                 .HasForeignKey(s => s.ProductId);
-
 
             modelBuilder.Entity<Stock>()
                 .HasMany(s => s.StockSizes)
@@ -52,27 +50,28 @@ namespace Back_End_TPI_PSS.Context
 
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Orders)
-                .WithOne()
-                .HasForeignKey(dc => dc.UserId);
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderLines)
+                .WithOne(ol => ol.Order)
+                .HasForeignKey(ol => ol.OrderId);
 
             modelBuilder.Entity<OrderLine>()
                 .HasOne(ol => ol.Product)
                 .WithMany()
                 .HasForeignKey(ol => ol.ProductId);
 
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.OrderLines)
-                .WithOne()
-                .HasForeignKey(ol => ol.OrderId);
+            modelBuilder.Entity<OrderLine>()
+                .HasOne(ol => ol.Color)           // Relación con Colour
+                .WithMany()
+                .HasForeignKey(ol => ol.ColorId);  // Clave foránea de Color
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.UserId);
-
-
-
+            modelBuilder.Entity<OrderLine>()
+                .HasOne(ol => ol.Size)             // Relación con Size
+                .WithMany()
+                .HasForeignKey(ol => ol.SizeId);   // Clave foránea de Tamaño
         }
     }
 }
-
