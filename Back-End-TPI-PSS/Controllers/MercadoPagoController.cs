@@ -49,15 +49,19 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("paymentStatus")]
-        public async Task<IActionResult> UpdatePaymentStatus([FromBody] Preference preference)
+        public async Task<IActionResult> UpdatePaymentStatus([FromQuery] string preferenceId, string status)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.PreferenceId == preference.Id);
 
-            await _orderService.UpdateOrderStatus(order);
-            order.UpdatedAt = DateTime.Now;
-            return Ok();
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.PreferenceId == preferenceId);
 
-               
+            if(status == "approved")
+            {
+                await _orderService.UpdateOrderStatus(order);
+                order.UpdatedAt = DateTime.Now;
+                return Ok();    
+            }
+            return NotFound();  
+        
         }
     }
 }

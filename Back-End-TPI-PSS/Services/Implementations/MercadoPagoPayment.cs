@@ -63,26 +63,27 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 
                 var order = new Order
                 {
+
+                    //ProductId = items.First().ProductId,
                     PreferenceId = preference.Id.ToString(),
                     OrderLines = items.Select(item => new OrderLine
                     {
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
                         UnitPrice = item.Price
-                    }).ToList()
+                    }).ToList(),
+                    
+                    
                 };
                 var paymentClient = new PaymentClient();
                 
                 Console.WriteLine("medio de la orden");
                 var orderEstado = preference.BackUrls.Success;
 
-                //if(preference.BackUrls.Success == "approved")
-                //{
+
                     await _orderService.AddOrder(order);
                     return preference;
-                //}
-                Console.WriteLine("final de la orden");
-                //return null;
+
 
                 
 

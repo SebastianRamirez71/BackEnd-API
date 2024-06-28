@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {}
+    "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {
+    "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+        "projectUniqueName": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
         "projectName": "Back-End-TPI-PPS",
-        "projectPath": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
-        "packagesPath": "C:\\Users\\lucho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucho\\Desktop\\PPS TUP\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
+        "projectPath": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+        "packagesPath": "C:\\Users\\sebar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lucho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sebar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -120,7 +125,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

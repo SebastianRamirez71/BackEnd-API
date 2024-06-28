@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Back-End-TPI-PPS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d529930c46be545123fd3e27e3a1d166c42ee5b8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Back-End-TPI-PPS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Back-End-TPI-PPS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

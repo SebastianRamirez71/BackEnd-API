@@ -12,9 +12,17 @@ namespace Back_End_TPI_PSS.Data.Entities
         public OrderStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        // Relación con User
         [ForeignKey("UserId")]
-        public User User { get; set; }
         public int UserId { get; set; }
+        public User User { get; set; }
+
+        // Relación con Product
+        //[ForeignKey("ProductId")]
+        //public int ProductId { get; set; }
+        //public Product Product { get; set; }
+
         public ICollection<OrderLine> OrderLines { get; set; }
     }
 

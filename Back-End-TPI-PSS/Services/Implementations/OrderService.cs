@@ -4,6 +4,7 @@ using Back_End_TPI_PSS.Data.Entities;
 using Back_End_TPI_PSS.Data.Models.OrderDTOs;
 using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -53,15 +54,34 @@ namespace Back_End_TPI_PSS.Services.Implementations
         public async Task<bool> UpdateOrderStatus(Order order)
         {
             var existingOrder = _context.Orders.FirstOrDefault(o => o.Id == order.Id);
-
             if (existingOrder != null)
             { 
                 existingOrder.Status = OrderStatus.Approved;
                 _context.Orders.Update(existingOrder);
                 await _context.SaveChangesAsync();
+               // await AddOrderLine(existingOrder);
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> AddOrderLine(Order order)
+        {
+            //Product product = _context.Products.FirstOrDefault(x => x.Id == order.ProductId);
+            //var stock = _context.Stocks.FirstOrDefault(x => x.ProductId == product.Id);
+            //var quantity = _context.StockSizes.FirstOrDefault(x => x.StockId == stock.Id);
+            var orderLine = new OrderLine
+            {
+                OrderId = order.Id,
+                //ProductId = order.ProductId,
+                //UnitPrice = product.Price,
+                //Description = product.Description,
+                //Quantity = quantity.Quantity
+            };
+
+            _context.OrderLines.Add(orderLine);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

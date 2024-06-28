@@ -2,7 +2,9 @@
 {
     public class MercadoPagoWebHook
     {
-        public long Id { get; set; }
-        public string Type { get; set; }
+        public string collection_id { get; set; }
+        public string collection_status { get; set; }
+        public string preference_id { get; set; }
+        public string status { get; set; }
     }
 }
