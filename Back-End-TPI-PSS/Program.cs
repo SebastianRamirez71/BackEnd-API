@@ -81,6 +81,7 @@ namespace Back_End_TPI_PSS
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IMercadoPagoPayment, MercadoPagoPayment>();
+            builder.Services.AddHttpContextAccessor();
 
             // Configuración de la aplicación
             var app = builder.Build();

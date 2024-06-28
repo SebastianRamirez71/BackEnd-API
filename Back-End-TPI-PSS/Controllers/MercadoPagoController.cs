@@ -1,29 +1,36 @@
-﻿using Back_End_TPI_PSS.Context;
-using Back_End_TPI_PSS.Data.Entities;
-using Back_End_TPI_PSS.Models;
-using Back_End_TPI_PSS.Services.Implementations;
-using Back_End_TPI_PSS.Services.Interfaces;
-using MercadoPago.Resource.Payment;
-using MercadoPago.Resource.Preference;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
+using Back_End_TPI_PSS.Context;
+using Back_End_TPI_PSS.Data.Entities;
+using Back_End_TPI_PSS.Models;
+using Back_End_TPI_PSS.Services.Interfaces;
 
 namespace Back_End_TPI_PSS.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize] // Asegura que todas las acciones del controlador requieran autenticación
     public class MercadoPagoController : ControllerBase
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly PPSContext _context;
-
         private readonly IMercadoPagoPayment _mercadoPagoPayment;
         private readonly IOrderService _orderService;
 
-        public MercadoPagoController(IMercadoPagoPayment mercadoPagoPayment, IOrderService orderService, PPSContext context)
+        public MercadoPagoController(
+            IHttpContextAccessor httpContextAccessor,
+            IMercadoPagoPayment mercadoPagoPayment,
+            IOrderService orderService,
+            PPSContext context)
         {
+            _httpContextAccessor = httpContextAccessor;
             _mercadoPagoPayment = mercadoPagoPayment;
             _orderService = orderService;
             _context = context;
@@ -51,17 +58,15 @@ namespace Back_End_TPI_PSS.Controllers
         [HttpPut("paymentStatus")]
         public async Task<IActionResult> UpdatePaymentStatus([FromQuery] string preferenceId, string status)
         {
-
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.PreferenceId == preferenceId);
 
-            if(status == "approved")
+            if (status == "approved")
             {
                 await _orderService.UpdateOrderStatus(order);
                 order.UpdatedAt = DateTime.Now;
-                return Ok();    
+                return Ok();
             }
-            return NotFound();  
-        
+            return NotFound();
         }
 
         [HttpPost("postOrderLine")]
@@ -76,6 +81,29 @@ namespace Back_End_TPI_PSS.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+
+        // Método para obtener el userId desde el token JWT
+        private int GetUserIdFromToken()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
+            {
+                var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                if (jwtToken != null && jwtToken.Claims.FirstOrDefault(c => c.Type == "sub") != null)
+                {
+                    var userId = int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "sub").Value);
+                    return userId;
+                }
+            }
+
+            throw new Exception("Error retrieving userId from token.");
         }
     }
 }
