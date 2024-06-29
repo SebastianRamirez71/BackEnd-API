@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Back-End-TPI-PPS", "Back-End-TPI-PPS.csproj", "{BD04EDD1-16A6-4BBE-A857-CC4A28B1FB05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Back-End-TPI-PSS.Test", "..\Back-End-TPI-PSS.Test\Back-End-TPI-PSS.Test.csproj", "{CACAC5E5-79B7-4133-8591-9F7355B26A79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BD04EDD1-16A6-4BBE-A857-CC4A28B1FB05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD04EDD1-16A6-4BBE-A857-CC4A28B1FB05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD04EDD1-16A6-4BBE-A857-CC4A28B1FB05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACAC5E5-79B7-4133-8591-9F7355B26A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACAC5E5-79B7-4133-8591-9F7355B26A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACAC5E5-79B7-4133-8591-9F7355B26A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACAC5E5-79B7-4133-8591-9F7355B26A79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

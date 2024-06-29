@@ -5,7 +5,7 @@ namespace Back_End_TPI_PSS.Context
 {
     public class PPSContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
         public DbSet<Product> Products { get; set; }

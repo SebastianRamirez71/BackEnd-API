@@ -239,6 +239,22 @@
           "build/net6.0/Microsoft.EntityFrameworkCore.Design.props": {}
         }
       },
+      "Microsoft.EntityFrameworkCore.InMemory/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/7.0.17": {
         "type": "package",
         "dependencies": {
@@ -1533,6 +1549,20 @@
         "lib/net6.0/Microsoft.EntityFrameworkCore.Design.xml",
         "microsoft.entityframeworkcore.design.7.0.17.nupkg.sha512",
         "microsoft.entityframeworkcore.design.nuspec"
+      ]
+    },
+    "Microsoft.EntityFrameworkCore.InMemory/6.0.0": {
+      "sha512": "WJmphvCn0wue9AX+Wvqj3XZ3ehNi9oyYBFNLtHVNvKqZrcimXBOqLo5RNf1fJWYSLWhOia/vzG4JtkAeZxZ8FQ==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.inmemory/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.xml",
+        "microsoft.entityframeworkcore.inmemory.6.0.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.inmemory.nuspec"
       ]
     },
     "Microsoft.EntityFrameworkCore.Relational/7.0.17": {
@@ -3166,6 +3196,7 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 6.0.24",
       "Microsoft.EntityFrameworkCore >= 7.0.17",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.17",
+      "Microsoft.EntityFrameworkCore.InMemory >= 6.0.0",
       "Microsoft.EntityFrameworkCore.Relational >= 7.0.17",
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.17",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.17",
@@ -3176,23 +3207,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\marti\\.nuget\\packages\\": {},
+    "C:\\Users\\sebar\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\marti\\Documents\\01-TPI-PPS\\Backend\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+      "projectUniqueName": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
       "projectName": "Back-End-TPI-PPS",
-      "projectPath": "C:\\Users\\marti\\Documents\\01-TPI-PPS\\Backend\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
-      "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\marti\\Documents\\01-TPI-PPS\\Backend\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
+      "projectPath": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\Back-End-TPI-PPS.csproj",
+      "packagesPath": "C:\\Users\\sebar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sebar\\Desktop\\back\\BackEnd-API\\Back-End-TPI-PSS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sebar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3201,6 +3232,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3248,6 +3280,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[7.0.17, )"
+          },
+          "Microsoft.EntityFrameworkCore.InMemory": {
+            "target": "Package",
+            "version": "[6.0.0, )"
           },
           "Microsoft.EntityFrameworkCore.Relational": {
             "target": "Package",
@@ -3299,7 +3335,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

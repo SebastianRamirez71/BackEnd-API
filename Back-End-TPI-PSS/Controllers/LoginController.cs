@@ -67,7 +67,7 @@ namespace Back_End_TPI_PSS.Controllers
                 _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddHours(5),
                 signingCredentials: credentials
             );
 

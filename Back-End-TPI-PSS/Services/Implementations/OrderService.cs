@@ -2,11 +2,11 @@
 using Back_End_TPI_PSS.Data.Entities;
 using Back_End_TPI_PSS.Data.Models.OrderDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Back_End_TPI_PSS.Services.Implementations
@@ -24,14 +24,21 @@ namespace Back_End_TPI_PSS.Services.Implementations
 
         public async Task<List<Order>> GetApprovedOrdersForUser(int userId)
         {
+
             return await _context.Orders
+                .Include(o => o.OrderLines).ThenInclude(x => x.Product)
+                .Include(o => o.OrderLines).ThenInclude(x => x.Size)
+                .Include(x => x.OrderLines).ThenInclude(x => x.Color)
                 .Where(o => o.UserId == userId && o.Status == "Approved")
                 .ToListAsync();
+
         }
 
         public async Task<List<Order>> GetAllOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders
+                 .Include(order => order.OrderLines)
+                 .ToListAsync();
         }
 
         public async Task<List<Order>> GetAllApprovedOrders()
@@ -72,8 +79,8 @@ namespace Back_End_TPI_PSS.Services.Implementations
                 }
             }
 
-            order.CreatedAt = DateTime.UtcNow;
-            order.UpdatedAt = DateTime.UtcNow;
+            order.CreatedAt = DateTime.Now;
+            order.UpdatedAt = DateTime.Now;
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 

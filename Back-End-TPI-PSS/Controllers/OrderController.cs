@@ -39,8 +39,9 @@ namespace Back_End_TPI_PSS.Controllers
                 {
                     return NotFound("No se encontraron órdenes aprobadas para este usuario.");
                 }
-
+               await _orderService.GetAllOrders();
                 return Ok(orders);
+
             }
             catch (Exception ex)
             {
@@ -50,7 +51,7 @@ namespace Back_End_TPI_PSS.Controllers
 
         // Endpoint para ver todas las órdenes (requiere rol de administrador)
         [HttpGet("admin/all")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
             try
