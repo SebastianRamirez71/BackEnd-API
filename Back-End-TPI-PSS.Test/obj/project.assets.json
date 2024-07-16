@@ -2827,7 +2827,7 @@
       },
       "Back-End-TPI-PPS/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
+        "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
           "AutoMapper": "13.0.1",
           "BCrypt.Net-Next": "4.0.3",
@@ -2848,10 +2848,7 @@
         },
         "runtime": {
           "bin/placeholder/Back-End-TPI-PPS.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       }
     }
   },
