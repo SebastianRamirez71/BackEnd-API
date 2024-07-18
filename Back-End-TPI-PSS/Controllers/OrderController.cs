@@ -73,7 +73,7 @@ namespace Back_End_TPI_PSS.Controllers
 
         // Endpoint para ver todas las órdenes aprobadas (requiere rol de administrador)
         [HttpGet("admin/approved")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAllApprovedOrders()
         {
             try
