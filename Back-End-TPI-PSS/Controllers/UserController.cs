@@ -19,6 +19,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpGet("user")]
+        [Authorize]
         public IActionResult GetUser(string email)
         {
             try
@@ -43,12 +44,14 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpGet("users")]
+        [Authorize(Policy = "Admin")]
         public IActionResult GetUsers()
         {
             return Ok(_userService.GetUsers());
         }
 
         [HttpDelete("users/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult DeleteUser(int id)
         {
             if (_userService.DeleteUser(id))

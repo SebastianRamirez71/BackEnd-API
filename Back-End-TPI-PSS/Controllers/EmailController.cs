@@ -1,5 +1,6 @@
 ﻿using Back_End_TPI_PSS.Data.Models;
 using Back_End_TPI_PSS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Back_End_TPI_PSS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmailController : ControllerBase
     {
         private readonly IEmailService _emailService;

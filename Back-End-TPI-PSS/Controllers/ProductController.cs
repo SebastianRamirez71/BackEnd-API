@@ -1,6 +1,7 @@
 ﻿using Back_End_TPI_PSS.Data.Entities;
 using Back_End_TPI_PSS.Data.Models.ProductDTOs;
 using Back_End_TPI_PSS.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End_TPI_PSS.Controllers
@@ -60,6 +61,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPost("products")]
+        [Authorize(Policy = "Admin")]
         public IActionResult AddProduct(ProductDto productDto)
         {
             try
@@ -77,6 +79,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPost("colours")]
+        [Authorize(Policy = "Admin")]
         public IActionResult AddColour([FromBody] ColourDto colourDto)
         {
             if (_productService.AddColour(colourDto))
@@ -87,6 +90,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPost("sizes")]
+        [Authorize(Policy = "Admin")]
         public IActionResult AddSize([FromBody] SizeDto sizeDto)
         {
             if (_productService.AddSize(sizeDto))
@@ -97,6 +101,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPost("categories")]
+        [Authorize(Policy = "Admin")]
         public IActionResult AddCategories([FromBody] CategoryDto categoryDto)
         {
             if (_productService.AddCategory(categoryDto))
@@ -107,6 +112,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("products/edit/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult EditProductById(int id, ProductToEditDto producttoeditdto)
         {
             if (_productService.EditProductById(id, producttoeditdto))
@@ -155,6 +161,7 @@ namespace Back_End_TPI_PSS.Controllers
 
         #region PutVariants
         [HttpPut("products/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult ChangeProductStatus(int id)
         {
             _productService.ChangeEntityStatus<Product>(id);
@@ -162,6 +169,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("colours/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult ChangeColourStatus(int id)
         {
             _productService.ChangeEntityStatus<Colour>(id);
@@ -169,6 +177,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("sizes/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult ChangeSizeStatus(int id)
         {
             _productService.ChangeEntityStatus<Size>(id);
@@ -176,6 +185,7 @@ namespace Back_End_TPI_PSS.Controllers
         }
 
         [HttpPut("categories/{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult ChangeCategoryStatus(int id)
         {
             _productService.ChangeEntityStatus<Category>(id);

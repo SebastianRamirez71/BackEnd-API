@@ -15,6 +15,15 @@ namespace Back_End_TPI_PSS
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("Client", policy => policy.RequireRole("Client"));
+                opt.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
+                opt.AddPolicy("AdminEmployee", policy => policy.RequireRole("Admin", "Employee"));
+                opt.AddPolicy("AdminClient", policy => policy.RequireRole("Admin", "Client"));
+            });
             // Obtener configuración JWT
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
             var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
