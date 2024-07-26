@@ -36,12 +36,12 @@ public class MercadoPagoPayment : IMercadoPagoPayment
 
             BackUrls = new PreferenceBackUrlsRequest
             {
-                Success = "http://localhost:3000",
-                Failure = "http://localhost:3000",
-                Pending = "http://localhost:3000",
+                Success = "https://pps-rss.web.app/home",
+                Failure = "https://pps-rss.web.app/home",
+                Pending = "https://pps-rss.web.app/home",
             },
             AutoReturn = "approved",
-            NotificationUrl = "https://tu-domino.com/api/mercadopago/webhook",
+            NotificationUrl = "https://tu-domino.com/api/mercadopago/webhook", //URL del Backend con el Endpoint Webhook
 
             Metadata = new Dictionary<string, object>
             {
