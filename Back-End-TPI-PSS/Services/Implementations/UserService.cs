@@ -38,14 +38,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
             return false;
         }
 
-        public bool UpdateUser(User user)
-        {
-            _context.Users.Update(user);
-            int r = _context.SaveChanges();
-
-            return r > 0;
-        }
-
         public bool ValidateEmail(string email)
         {
             bool existingEmail = _context.Users.Any(u => u.Email == email);
@@ -104,11 +96,6 @@ namespace Back_End_TPI_PSS.Services.Implementations
             }
             return false;
         }
-        public User? GetUserById(string id)
-        {
-            return _context.Users.FirstOrDefault(x => x.Id.ToString() == id);
-        }
-
         public User GetUserByEmail(string email)
         {
             return _context.Users.SingleOrDefault(e => e.Email == email);

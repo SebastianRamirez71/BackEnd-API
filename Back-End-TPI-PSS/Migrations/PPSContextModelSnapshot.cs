@@ -255,9 +255,6 @@ namespace Back_End_TPI_PSS.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Expiry")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -266,10 +263,6 @@ namespace Back_End_TPI_PSS.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RefreshToken")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

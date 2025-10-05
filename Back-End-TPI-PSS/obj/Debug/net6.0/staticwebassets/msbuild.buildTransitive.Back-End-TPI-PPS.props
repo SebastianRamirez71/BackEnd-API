@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Back-End-TPI-PPS.props" />
+</Project>
