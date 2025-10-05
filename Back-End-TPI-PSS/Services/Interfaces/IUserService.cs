@@ -7,11 +7,13 @@ namespace Back_End_TPI_PSS.Services.Interfaces
     public interface IUserService
     {
         public bool CreateUser(UserDto userDto);
+        bool UpdateUser(User user);
         public bool ValidateUser(string Name);
         public bool ValidateEmail(string email);
         public bool UserLogin(UserLoginDto userLoginDto);
         public List<UserReturnDto> GetUsers();
         public bool DeleteUser(int id);
         public User GetUserByEmail(string email);
+        User? GetUserById(string id);
     }
 }
